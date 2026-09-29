@@ -27,13 +27,13 @@ class AuditLog:
         self.events: list[dict] = []
         if enabled:
             self.path.parent.mkdir(parents=True, exist_ok=True)
-            self.path.write_text("")
+            self.path.write_text("", encoding="utf-8")
 
     def log(self, event: str, **payload) -> None:
         rec = {"ts": datetime.now(timezone.utc).isoformat(timespec="milliseconds"), "event": event, **payload}
         self.events.append(rec)
         if self.enabled:
-            with self.path.open("a") as f:
+            with self.path.open("a", encoding="utf-8") as f:
                 f.write(json.dumps(rec, default=_default) + "\n")
 
     def tool_call(self, tb, name: str, args: dict | None = None):

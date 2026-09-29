@@ -74,8 +74,8 @@ def run(agent_kind: str, limit: int | None = None, write_audit: bool = True, ale
     C.REPORTS_DIR.mkdir(exist_ok=True)
     tag = agent_kind
     res.to_csv(C.REPORTS_DIR / f"results_{tag}.csv", index=False)
-    (C.REPORTS_DIR / f"metrics_{tag}.json").write_text(json.dumps(metrics, indent=2))
-    (C.REPORTS_DIR / f"eval_report_{tag}.md").write_text(render_report(metrics, res, agent, run_id))
+    (C.REPORTS_DIR / f"metrics_{tag}.json").write_text(json.dumps(metrics, indent=2), encoding="utf-8")
+    (C.REPORTS_DIR / f"eval_report_{tag}.md").write_text(render_report(metrics, res, agent, run_id), encoding="utf-8")
     return metrics, res, run_id
 
 

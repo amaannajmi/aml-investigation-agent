@@ -123,5 +123,5 @@
       "qa_per_auto_close": 3
     }
   },
-  "mean_seconds_per_alert": 0.046
+  "mean_seconds_per_alert": 0.049
 }

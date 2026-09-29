@@ -114,7 +114,7 @@ if page == "Case review":
                         st.error("An override needs a reason: it is the feedback that improves the agent.")
                     else:
                         REVIEWS.parent.mkdir(exist_ok=True)
-                        with REVIEWS.open("a") as f:
+                        with REVIEWS.open("a", encoding="utf-8") as f:
                             f.write(json.dumps({"ts": datetime.now(timezone.utc).isoformat(), "alert_id": aid,
                                                 "agent": d.agent, "agent_disposition": d.disposition,
                                                 "reviewer": reviewer, "decision": choice, "reason": reason}) + "\n")
@@ -141,7 +141,7 @@ else:
         st.warning("No evaluation yet. Run `python -m amlagent.evaluate --agent baseline`.")
     for p in reports:
         tag = p.stem.removeprefix("metrics_")
-        m = json.loads(p.read_text())
+        m = json.loads(p.read_text(encoding="utf-8"))
         st.subheader(f"Agent: {tag}")
         cols = st.columns(5)
         cols[0].metric("Model recall", f"{m['model_recall']:.0%}", help="Suspicious alerts escalated by the agent")
@@ -157,4 +157,4 @@ else:
         rep = C.REPORTS_DIR / f"eval_report_{tag}.md"
         if rep.exists():
             with st.expander("Full report"):
-                st.markdown(rep.read_text())
+                st.markdown(rep.read_text(encoding="utf-8"))

@@ -1,6 +1,6 @@
 # Evaluation report: baseline-rules
 
-Run `20260929T171427_baseline-rules` · model `deterministic` · 248 alerts (104 suspicious, 144 benign) · auto-close confidence threshold 0.85
+Run `20260929T193324_baseline-rules` · model `deterministic` · 248 alerts (104 suspicious, 144 benign) · auto-close confidence threshold 0.85
 
 ## Headline
 
@@ -92,4 +92,4 @@ None.
 
 - Workload estimate assumes 45 min per manual L1 investigation, 12 min to review an agent-prepared case, and 3 min of sampled QA per auto-closed alert.
 - The dataset is synthetic with a 40% suspicious rate. Real alert queues are typically over 90% false positives, so precision here overstates production precision.
-- Mean processing time 0.046s per alert.
+- Mean processing time 0.049s per alert.
