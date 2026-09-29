@@ -2,15 +2,15 @@
   "alerts": 248,
   "suspicious": 104,
   "benign": 144,
-  "model_recall": 0.808,
+  "model_recall": 0.942,
   "system_recall_after_guardrails": 1.0,
-  "missed_suspicious": 20,
+  "missed_suspicious": 6,
   "missed_after_guardrails": 0,
-  "fp_clearance_rate": 0.917,
-  "auto_close_rate_benign": 0.667,
-  "escalation_precision": 0.875,
-  "sar_recommendations": 61,
-  "typology_accuracy_on_caught": 0.905,
+  "fp_clearance_rate": 0.965,
+  "auto_close_rate_benign": 0.653,
+  "escalation_precision": 0.951,
+  "sar_recommendations": 59,
+  "typology_accuracy_on_caught": 0.98,
   "guardrail_violation_rate": 0.0,
   "narrative_structure_pass_rate_escalations": 1.0,
   "recall_by_scenario": {
@@ -24,7 +24,7 @@
     },
     "mule_cash_out": {
       "n": 12,
-      "rate": 0.583
+      "rate": 0.833
     },
     "pass_through": {
       "n": 16,
@@ -32,11 +32,11 @@
     },
     "sanctions_exposure": {
       "n": 16,
-      "rate": 0.812
+      "rate": 0.875
     },
     "sanctions_transliteration": {
       "n": 12,
-      "rate": 0.0
+      "rate": 0.833
     },
     "structuring": {
       "n": 16,
@@ -46,11 +46,11 @@
   "recall_by_variant": {
     "hard": {
       "n": 33,
-      "rate": 0.788
+      "rate": 0.909
     },
     "standard": {
       "n": 71,
-      "rate": 0.817
+      "rate": 0.958
     }
   },
   "clearance_by_scenario": {
@@ -64,7 +64,7 @@
     },
     "one_off_large_credit": {
       "n": 24,
-      "rate": 1.0
+      "rate": 0.958
     },
     "online_retailer": {
       "n": 24,
@@ -72,7 +72,7 @@
     },
     "own_account_sweep": {
       "n": 24,
-      "rate": 1.0
+      "rate": 0.958
     },
     "sanctions_false_hit": {
       "n": 24,
@@ -80,7 +80,7 @@
     },
     "shared_expenses": {
       "n": 12,
-      "rate": 0.0
+      "rate": 0.75
     }
   },
   "auto_close_by_scenario": {
@@ -94,7 +94,7 @@
     },
     "one_off_large_credit": {
       "n": 24,
-      "rate": 1.0
+      "rate": 0.958
     },
     "online_retailer": {
       "n": 24,
@@ -102,7 +102,7 @@
     },
     "own_account_sweep": {
       "n": 24,
-      "rate": 1.0
+      "rate": 0.958
     },
     "sanctions_false_hit": {
       "n": 24,
@@ -115,13 +115,13 @@
   },
   "workload": {
     "manual_hours": 186.0,
-    "assisted_hours": 35.2,
-    "hours_saved_pct": 0.811,
+    "assisted_hours": 35.5,
+    "hours_saved_pct": 0.809,
     "assumptions_minutes": {
       "manual_per_alert": 45,
       "review_per_agent_case": 12,
       "qa_per_auto_close": 3
     }
   },
-  "mean_seconds_per_alert": 0.049
+  "mean_seconds_per_alert": 0.15
 }

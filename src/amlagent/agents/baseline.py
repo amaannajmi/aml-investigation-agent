@@ -19,13 +19,21 @@ RULE_SIGNALS = {
 }
 
 
+def sh_list(link: dict) -> list[dict]:
+    return link.get("shared", [])
+
+
 def _eur(x: float) -> str:
     return f"EUR {x:,.2f}"
 
 
 class BaselineAgent:
-    name = "baseline-rules"
+    """use_identity=False reproduces v1 (transactions only); True adds access, network and dispute rules (v2)."""
     model = "deterministic"
+
+    def __init__(self, use_identity: bool = True):
+        self.use_identity = use_identity
+        self.name = "baseline-rules-v2" if use_identity else "baseline-rules-v1"
 
     def investigate(self, tb: Toolbox, audit: AuditLog) -> tuple[Decision, dict]:
         alert = audit.tool_call(tb, "get_alert")
@@ -116,7 +124,78 @@ class BaselineAgent:
                              f"{j['high_risk_txn_count']} payment(s) totalling {_eur(j['high_risk_eur'])} with "
                              f"{', '.join(undeclared)} (FATF call-for-action), no declared ties", j["high_risk_txn_ids"]))
 
+        if self.use_identity and "network" in ind:
+            self._identity_rules(tb, audit, alert, ind, scr, findings, benign)
+
         return self._decide(tb, alert, prof, findings, benign), {"screening": scr, "indicators": ind}
+
+    # --- v2: access, network and dispute evidence -------------------------------------------------------
+    def _identity_rules(self, tb, audit, alert, ind, scr, findings, benign):
+        audit.tool_call(tb, "get_identity_profile")
+        audit.tool_call(tb, "get_login_history", {"limit": 10})
+        links = audit.tool_call(tb, "get_linked_accounts")["linked_accounts"]
+        audit.tool_call(tb, "get_disputes")
+        acc, net, dsp = ind["access"], ind["network"], ind["disputes"]
+        strong_types = {"device_id", "bank_fingerprint", "phone", "email"}
+
+        # 1. Linked to accounts we have already closed, limited or reported
+        if net["adverse_links_medium_or_strong"]:
+            shared = net["adverse_shared_identifier_types"]
+            strong = bool(strong_types & set(shared))
+            typ = (net["adverse_typologies"] or ["money_mule"])[0]
+            findings.append(("RECOMMEND_SAR" if strong and net["adverse_with_prior_sar"] else "ESCALATE_L2", typ,
+                             0.85 if strong else 0.7,
+                             f"Shares {', '.join(s.replace('_', ' ') for s in shared)} with {net['adverse_links_medium_or_strong']} "
+                             f"closed/limited account(s) ({', '.join(net['adverse_linked_ids'][:4])}), "
+                             f"{net['adverse_with_prior_sar']} with a prior SAR", net["adverse_linked_ids"] + acc["evidence_login_ids"][:4]))
+
+        # 2. Payers saying their money was taken or they were scammed: this account may be receiving victim funds
+        if dsp["victim_claims"]:
+            findings.append(("RECOMMEND_SAR" if dsp["victim_claims"] >= 2 else "ESCALATE_L2", "money_mule",
+                             0.85 if dsp["victim_claims"] >= 2 else 0.65,
+                             f"{dsp['victim_claims']} payer claim(s) of unauthorised or scam payments "
+                             f"({', '.join(dsp['victim_claim_ids'][:5])})", dsp["victim_claim_ids"] + dsp["victim_claim_txn_ids"]))
+
+        # 3. Someone new appears to be operating the account
+        takeover = acc["new_device_login_share_window"] >= 0.6 and \
+            (acc["foreign_login_share_window"] >= 0.5 or acc["vpn_hosting_login_share_window"] >= 0.3)
+        if takeover:
+            text = (f"Account operated from a new device in the window ({acc['new_device_login_share_window']:.0%} of logins); "
+                    f"foreign logins from {', '.join(acc['foreign_login_countries_window']) or 'n/a'}, "
+                    f"{acc['vpn_hosting_login_share_window']:.0%} via hosting/VPN")
+            if findings:
+                findings[:] = [(d, t, min(0.95, c + 0.05), i + ("; " + text if k == 0 else ""), e)
+                               for k, (d, t, c, i, e) in enumerate(findings)]
+            elif alert["rule_id"] in ("TM-RMF-02", "TM-FAN-03"):
+                findings.append(("ESCALATE_L2", "pass_through" if alert["rule_id"] == "TM-RMF-02" else "money_mule", 0.65,
+                                 text, acc["evidence_login_ids"]))
+
+        # 4. Near-miss sanctions name plus logins from a sanctioned country
+        if acc["sanctioned_country_logins_window"]:
+            near = [h for h in scr["results"] if not h["is_potential_match"] and h["country_matches"] and h["score"] >= 70]
+            if near:
+                h = near[0]
+                findings.append(("ESCALATE_L2", "sanctions_exposure", 0.7,
+                                 f"Payee '{h['screened_name']}' is a near-miss ({h['score']}) for sanctioned '{h['list_name']}' "
+                                 f"({h['list_country']}), and the account was accessed from a sanctioned country "
+                                 f"{acc['sanctioned_country_logins_window']} time(s) in the window",
+                                 h["txn_ids"] + acc["evidence_login_ids"][:3]))
+
+        # 5. Fan-in with no corroboration, where some payers share the customer's household: benign explanation
+        fan_in_only = [f for f in findings if f[1] == "money_mule"] and not dsp["victim_claims"] and \
+            not net["adverse_links_medium_or_strong"] and not acc["new_devices_window"]
+        if fan_in_only:
+            payers = {str(v["counterparty_name"]) for v in tb.txn_lookup().values() if v["direction"] == "IN"}
+            housemates = [l for l in links if not l["is_adverse"] and l["customer_name"] in payers and
+                          any(sh["identifier_type"] == "ip" and sh["strength"] == "medium" for sh in sh_list(l))]
+            if housemates:
+                findings[:] = [f for f in findings if f[1] != "money_mule"]
+                benign.append(("fan_in", 0.8, f"{len(housemates)} of the payers ({', '.join(h['customer_id'] for h in housemates)}) "
+                                              f"share the customer's home IP and are clean accounts, consistent with a shared household; "
+                                              f"no victim claims, no new devices, no links to actioned accounts"))
+            else:
+                findings[:] = [("ESCALATE_L2", t, 0.55, i + "; no network, device or victim-claim corroboration", e)
+                               if t == "money_mule" and d == "RECOMMEND_SAR" else (d, t, c, i, e) for d, t, c, i, e in findings]
 
     # ----------------------------------------------------------------------------------------
     def _decide(self, tb, alert, prof, findings, benign) -> Decision:
@@ -128,17 +207,20 @@ class BaselineAgent:
             if len(findings) > 1:
                 conf = min(0.95, conf + 0.05)
             typs = list(dict.fromkeys(f[1] for f in findings))
-            ev = list(dict.fromkeys(t for f in findings for t in f[4]))[:25]
+            ev = list(dict.fromkeys(t for f in findings for t in f[4]))[:30]
             indicators = [f[3] for f in findings]
-            amt = sum(txns[t]["amount_eur"] for t in ev if t in txns)
+            tx_ev = [t for t in ev if t in txns]
+            other_ev = [t for t in ev if t not in txns]
+            amt = sum(txns[t]["amount_eur"] for t in tx_ev)
             first = min((txns[t]["timestamp"] for t in ev if t in txns), default=None)
             last = max((txns[t]["timestamp"] for t in ev if t in txns), default=None)
             narrative = (
                 f"Subject: {prof['customer_name']} ({prof['customer_id']}), {prof['customer_type'].lower()}, "
                 f"occupation/activity: {prof['occupation']}, expected monthly inflow {_eur(prof['expected_monthly_inflow_eur'])}. "
                 f"Alert {alert['alert_id']} ({alert['rule_name']}) was reviewed over the 30-day lookback. "
-                f"Between {str(first)[:10]} and {str(last)[:10]}, {len(ev)} transactions totalling {_eur(amt)} "
-                f"({', '.join(ev[:8])}{'...' if len(ev) > 8 else ''}) were identified as relevant. "
+                f"Between {str(first)[:10]} and {str(last)[:10]}, {len(tx_ev)} transactions totalling {_eur(amt)} "
+                f"({', '.join(tx_ev[:8])}{'...' if len(tx_ev) > 8 else ''}) were identified as relevant. "
+                + (f"Other evidence: {', '.join(other_ev[:8])}. " if other_ev else "") +
                 f"Indicators: " + " | ".join(indicators) + ". "
                 f"Suspected typology: {', '.join(typs).replace('_', ' ')}. The activity is inconsistent with the customer's "
                 f"stated profile and no legitimate explanation was identified in the available data."

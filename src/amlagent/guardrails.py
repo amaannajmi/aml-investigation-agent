@@ -11,7 +11,7 @@ from . import config as C
 from .schema import AUTO_CLOSE_ELIGIBLE, HUMAN_REVIEW, SAR_PENDING, Decision, GuardrailResult
 from .tools import Toolbox
 
-TXN_RE = re.compile(r"TXN-\d+")
+ID_RE = re.compile(r"\b(?:TXN-\d+|LGN-\d+|DSP-\d+|CUS-\d+)\b")   # transactions, logins, disputes, accounts
 AMOUNT_RE = re.compile(r"(?:EUR|€)\s?([\d,]+(?:\.\d{1,2})?)")
 
 
@@ -32,7 +32,7 @@ def _numbers(obj):
 def apply_guardrails(decision: Decision, tb: Toolbox, screening: dict | None = None) -> GuardrailResult:
     checks, overrides = [], []
     disposition = decision.disposition
-    known = tb.all_txn_ids()
+    known = tb.all_evidence_ids()
     txns = tb.txn_lookup()
 
     def check(name, passed, detail=""):
@@ -43,11 +43,12 @@ def apply_guardrails(decision: Decision, tb: Toolbox, screening: dict | None = N
     errs = decision.validate()
     check("schema_valid", not errs, "; ".join(errs))
 
-    # 2. Grounding: every transaction the agent cites must exist and belong to this customer
-    cited = set(decision.evidence_txn_ids) | set(TXN_RE.findall(decision.narrative)) | set(TXN_RE.findall(decision.rationale))
+    # 2. Grounding: every ID the agent cites (transaction, login, dispute, linked account) must exist and be
+    #    reachable from this customer's case
+    cited = set(decision.evidence_txn_ids) | set(ID_RE.findall(decision.narrative)) | set(ID_RE.findall(decision.rationale))
     fabricated = sorted(cited - known)
     check("citations_grounded", not fabricated,
-          f"cited IDs not found for {tb.customer_id}: {fabricated}" if fabricated else f"{len(cited)} citations verified")
+          f"cited IDs not found in this case: {fabricated}" if fabricated else f"{len(cited)} citations verified")
 
     # 3. Grounding: every EUR amount quoted in the narrative must be traceable to a transaction, the sum of
     #    the cited transactions, or a figure produced by a tool (KYC expected activity, computed aggregates).

@@ -1,0 +1,131 @@
+dispute_id,customer_id,txn_id,opened,reason,amount_eur,status,filed_by,counterparty_name
+DSP-00001,CUS-10006,TXN-100229,2026-08-31,Scam: purchase / investment (APP),588.72,Open,payer,Sato Group
+DSP-00002,CUS-10006,TXN-100265,2026-08-15,Unauthorised transaction,500.73,Open,payer,Pavel Weber
+DSP-00003,CUS-10009,TXN-100430,2026-07-21,Item not received,140.12,Resolved: seller won,buyer,Liam Santos
+DSP-00004,CUS-10009,TXN-100425,2026-07-18,Item not as described,105.1,Resolved: refunded,buyer,Lukas Jansen
+DSP-00005,CUS-10014,TXN-100624,2026-08-23,Unauthorised transaction,1384.69,Open,payer,Rafael Novak
+DSP-00006,CUS-10014,TXN-100622,2026-08-19,Unauthorised transaction,1027.88,Lost by account holder,payer,Ines Jansen
+DSP-00007,CUS-10014,TXN-100631,2026-08-17,Scam: purchase / investment (APP),568.31,Lost by account holder,payer,Chloe Moreau
+DSP-00008,CUS-10014,TXN-100625,2026-08-29,Scam: purchase / investment (APP),1091.98,Open,payer,Noah Tanaka
+DSP-00009,CUS-10016,TXN-100670,2026-08-28,Unauthorised transaction,8000.77,Resolved: withdrawn by payer,payer,Okafor Group
+DSP-00010,CUS-10018,TXN-100752,2026-08-29,Unauthorised transaction,2825.02,Resolved: withdrawn by payer,payer,Haddad Stores
+DSP-00011,CUS-10020,TXN-100900,2026-08-20,Item not received,191.5,Resolved: seller won,buyer,Sofia Weber
+DSP-00012,CUS-10020,TXN-100865,2026-08-12,Item not received,25.76,Resolved: seller won,buyer,Arjun Silva
+DSP-00013,CUS-10020,TXN-100866,2026-07-17,Item not received,27.13,Resolved: refunded,buyer,Amara Sato
+DSP-00014,CUS-10020,TXN-100916,2026-08-14,Item not as described,82.57,Resolved: seller won,buyer,Felix Kowalski
+DSP-00015,CUS-10020,TXN-100906,2026-07-15,Item not received,220.27,Resolved: refunded,buyer,Mei Sharma
+DSP-00016,CUS-10020,TXN-100934,2026-08-25,Item not as described,101.26,Resolved: refunded,buyer,Ibrahim Sharma
+DSP-00017,CUS-10026,TXN-101178,2026-08-08,Item not as described,148.63,Resolved: refunded,buyer,Tomas Murphy
+DSP-00018,CUS-10038,TXN-101728,2026-07-28,Item not received,25.87,Resolved: seller won,buyer,Fatima Garcia
+DSP-00019,CUS-10038,TXN-101763,2026-08-23,Item not as described,40.23,Resolved: refunded,buyer,Samir Horvat
+DSP-00020,CUS-10038,TXN-101768,2026-08-10,Item not as described,96.32,Resolved: refunded,buyer,Emil Kumar
+DSP-00021,CUS-10038,TXN-101748,2026-08-20,Item not received,218.22,Resolved: seller won,buyer,Tomas Silva
+DSP-00022,CUS-10045,TXN-102082,2026-09-01,Unauthorised transaction,487.69,Open,payer,Zara Nasser
+DSP-00023,CUS-10045,TXN-102071,2026-09-01,Scam: purchase / investment (APP),942.53,Open,payer,Noah Lopez
+DSP-00024,CUS-10046,TXN-102134,2026-08-25,Scam: purchase / investment (APP),714.84,Open,payer,Ines Meyer
+DSP-00025,CUS-10046,TXN-102132,2026-08-20,Scam: purchase / investment (APP),1127.2,Open,payer,Ciara Weber
+DSP-00026,CUS-10046,TXN-102126,2026-08-13,Unauthorised transaction,1448.27,Lost by account holder,payer,Mei Dubois
+DSP-00027,CUS-10054,TXN-102452,2026-07-15,Item not as described,59.22,Resolved: seller won,buyer,Mei Murphy
+DSP-00028,CUS-10054,TXN-102457,2026-09-01,Item not received,46.58,Resolved: seller won,buyer,Jonas Walsh
+DSP-00029,CUS-10056,TXN-102541,2026-08-14,Unauthorised transaction,244.81,Lost by account holder,payer,Kofi Silva
+DSP-00030,CUS-10057,TXN-102589,2026-08-06,Item not received,167.72,Resolved: refunded,buyer,Elena Costa
+DSP-00031,CUS-10057,TXN-102628,2026-08-13,Item not as described,201.85,Resolved: seller won,buyer,Chen Moreau
+DSP-00032,CUS-10057,TXN-102601,2026-06-12,Item not received,56.97,Resolved: refunded,buyer,Lukas Murphy
+DSP-00033,CUS-10057,TXN-102605,2026-08-12,Item not received,63.29,Resolved: refunded,buyer,Elena Jansen
+DSP-00034,CUS-10058,TXN-102705,2026-07-28,Item not received,93.04,Resolved: seller won,buyer,Tomas Jansen
+DSP-00035,CUS-10058,TXN-102704,2026-08-08,Item not as described,243.75,Resolved: refunded,buyer,Rafael Kowalski
+DSP-00036,CUS-10063,TXN-103019,2026-08-02,Item not as described,21.96,Resolved: seller won,buyer,Kofi Nasser
+DSP-00037,CUS-10063,TXN-102991,2026-09-01,Item not as described,33.2,Resolved: seller won,buyer,Arjun Dubois
+DSP-00038,CUS-10063,TXN-102981,2026-06-27,Item not as described,191.4,Resolved: seller won,buyer,Yuki Kumar
+DSP-00039,CUS-10063,TXN-103044,2026-08-31,Item not received,240.09,Resolved: seller won,buyer,Zara Dubois
+DSP-00040,CUS-10066,TXN-103174,2026-08-28,Unauthorised transaction,887.87,Open,payer,Lukas Meyer
+DSP-00041,CUS-10066,TXN-103175,2026-08-26,Scam: purchase / investment (APP),606.08,Lost by account holder,payer,Daniel Kumar
+DSP-00042,CUS-10066,TXN-103176,2026-08-22,Scam: purchase / investment (APP),369.41,Lost by account holder,payer,Tomas Byrne
+DSP-00043,CUS-10090,TXN-104184,2026-08-30,Unauthorised transaction,1396.17,Lost by account holder,payer,Pavel Sato
+DSP-00044,CUS-10090,TXN-104190,2026-08-26,Unauthorised transaction,739.26,Lost by account holder,payer,Chen Weber
+DSP-00045,CUS-10090,TXN-104185,2026-08-16,Unauthorised transaction,843.51,Open,payer,Chen Popescu
+DSP-00046,CUS-10090,TXN-104192,2026-08-09,Scam: purchase / investment (APP),1126.25,Lost by account holder,payer,Nora Lindqvist
+DSP-00047,CUS-10094,TXN-104376,2026-09-01,Unauthorised transaction,471.28,Lost by account holder,payer,Mia Murphy
+DSP-00048,CUS-10094,TXN-104365,2026-08-10,Unauthorised transaction,523.88,Open,payer,Ciara Murphy
+DSP-00049,CUS-10106,TXN-104924,2026-07-03,Item not received,205.45,Resolved: seller won,buyer,Jonas Meyer
+DSP-00050,CUS-10106,TXN-104947,2026-07-25,Item not as described,96.71,Resolved: refunded,buyer,Marco Schmidt
+DSP-00051,CUS-10114,TXN-105286,2026-08-13,Scam: purchase / investment (APP),879.88,Open,payer,Tomas Dubois
+DSP-00052,CUS-10122,TXN-105654,2026-08-26,Unauthorised transaction,298.77,Lost by account holder,payer,Liam Sato
+DSP-00053,CUS-10122,TXN-105665,2026-09-01,Unauthorised transaction,466.96,Open,payer,Arjun Brennan
+DSP-00054,CUS-10122,TXN-105668,2026-08-22,Unauthorised transaction,222.38,Open,payer,Zara Kelly
+DSP-00055,CUS-10128,TXN-105912,2026-06-14,Item not received,37.23,Resolved: seller won,buyer,Noah Schmidt
+DSP-00056,CUS-10128,TXN-105930,2026-08-26,Item not received,182.82,Resolved: seller won,buyer,Zara Costa
+DSP-00057,CUS-10135,TXN-106250,2026-06-17,Item not received,103.47,Resolved: seller won,buyer,Mia Ivanova
+DSP-00058,CUS-10135,TXN-106289,2026-06-18,Item not as described,36.09,Resolved: seller won,buyer,Noah Lindqvist
+DSP-00059,CUS-10136,TXN-106358,2026-08-28,Item not received,129.42,Resolved: seller won,buyer,Mei Sato
+DSP-00060,CUS-10136,TXN-106354,2026-07-10,Item not as described,29.37,Resolved: seller won,buyer,Pavel Rossi
+DSP-00061,CUS-10137,TXN-106469,2026-08-21,Item not received,189.23,Resolved: refunded,buyer,Amara Weber
+DSP-00062,CUS-10146,TXN-106864,2026-08-18,Scam: purchase / investment (APP),391.14,Lost by account holder,payer,Aoife Kumar
+DSP-00063,CUS-10146,TXN-106871,2026-09-01,Scam: purchase / investment (APP),328.29,Lost by account holder,payer,Arjun Kowalski
+DSP-00064,CUS-10159,TXN-107478,2026-08-25,Unauthorised transaction,964.63,Lost by account holder,payer,Pavel Sato
+DSP-00065,CUS-10159,TXN-107467,2026-08-27,Unauthorised transaction,1177.44,Lost by account holder,payer,Hannah Schmidt
+DSP-00066,CUS-10159,TXN-107481,2026-08-31,Scam: purchase / investment (APP),1102.39,Open,payer,Arjun Haddad
+DSP-00067,CUS-10159,TXN-107472,2026-08-21,Unauthorised transaction,748.32,Lost by account holder,payer,Zara Murphy
+DSP-00068,CUS-10159,TXN-107424,2026-09-01,Scam: purchase / investment (APP),1772.29,Open,payer,Santos Group
+DSP-00069,CUS-10164,TXN-107756,2026-08-30,Item not as described,57.79,Resolved: refunded,buyer,Sofia Moreau
+DSP-00070,CUS-10164,TXN-107684,2026-07-16,Item not as described,204.19,Resolved: seller won,buyer,Elena Tanaka
+DSP-00071,CUS-10164,TXN-107717,2026-08-27,Item not as described,114.57,Resolved: seller won,buyer,Zara Nasser
+DSP-00072,CUS-10164,TXN-107680,2026-07-14,Item not as described,111.35,Resolved: refunded,buyer,Pavel Kelly
+DSP-00073,CUS-10164,TXN-107708,2026-09-01,Item not received,128.17,Resolved: refunded,buyer,Tomas Novak
+DSP-00074,CUS-10165,TXN-107820,2026-08-23,Item not as described,183.66,Resolved: seller won,buyer,Olga Sato
+DSP-00075,CUS-10178,TXN-108405,2026-08-25,Unauthorised transaction,505.28,Lost by account holder,payer,Marco Meyer
+DSP-00076,CUS-10178,TXN-108418,2026-08-14,Scam: purchase / investment (APP),724.62,Open,payer,Ibrahim Sato
+DSP-00077,CUS-10178,TXN-108394,2026-08-31,Unauthorised transaction,796.82,Open,payer,Nora Byrne
+DSP-00078,CUS-10178,TXN-108399,2026-08-29,Unauthorised transaction,349.48,Open,payer,Emil Byrne
+DSP-00079,CUS-10178,TXN-108348,2026-09-01,Unauthorised transaction,796.32,Open,payer,Mensah Ltd
+DSP-00080,CUS-10185,TXN-108708,2026-07-14,Item not received,75.66,Resolved: refunded,buyer,Noah Byrne
+DSP-00081,CUS-10186,TXN-108806,2026-08-16,Scam: purchase / investment (APP),308.07,Open,payer,Felix Walsh
+DSP-00082,CUS-10188,TXN-108901,2026-08-13,Scam: purchase / investment (APP),911.58,Open,payer,Chen Murphy
+DSP-00083,CUS-10188,TXN-108892,2026-08-07,Scam: purchase / investment (APP),735.17,Lost by account holder,payer,Pavel Meyer
+DSP-00084,CUS-10188,TXN-108898,2026-09-01,Unauthorised transaction,533.36,Open,payer,Olga Dubois
+DSP-00085,CUS-10188,TXN-108896,2026-09-01,Unauthorised transaction,476.3,Open,payer,Sofia Meyer
+DSP-00086,CUS-10190,TXN-109004,2026-07-21,Item not received,60.25,Resolved: refunded,buyer,Olga Jansen
+DSP-00087,CUS-10192,TXN-109118,2026-08-16,Scam: purchase / investment (APP),854.54,Open,payer,Samir Kowalski
+DSP-00088,CUS-10192,TXN-109124,2026-08-09,Scam: purchase / investment (APP),1074.63,Open,payer,Emil Walsh
+DSP-00089,CUS-10192,TXN-109113,2026-09-01,Scam: purchase / investment (APP),429.18,Lost by account holder,payer,Zara Rossi
+DSP-00090,CUS-10200,TXN-109500,2026-08-20,Scam: purchase / investment (APP),342.65,Open,payer,Olga Walsh
+DSP-00091,CUS-10200,TXN-109488,2026-08-24,Scam: purchase / investment (APP),1090.43,Open,payer,Oisin Popescu
+DSP-00092,CUS-10200,TXN-109486,2026-08-05,Scam: purchase / investment (APP),821.87,Lost by account holder,payer,Omar Schmidt
+DSP-00093,CUS-10200,TXN-109487,2026-08-25,Unauthorised transaction,704.43,Lost by account holder,payer,Hannah OBrien
+DSP-00094,CUS-10205,TXN-109777,2026-07-18,Item not received,59.89,Resolved: seller won,buyer,Samir Brennan
+DSP-00095,CUS-10209,TXN-109976,2026-06-20,Item not received,152.94,Resolved: refunded,buyer,Kenji Haddad
+DSP-00096,CUS-10209,TXN-110026,2026-08-29,Item not received,242.74,Resolved: seller won,buyer,Yuki Silva
+DSP-00097,CUS-10209,TXN-109997,2026-06-26,Item not received,36.7,Resolved: refunded,buyer,Hannah Jansen
+DSP-00098,CUS-10209,TXN-109978,2026-08-25,Item not received,183.94,Resolved: refunded,buyer,Omar Dubois
+DSP-00099,CUS-10213,TXN-110251,2026-08-31,Unauthorised transaction,860.75,Open,payer,Yuki Meyer
+DSP-00100,CUS-10213,TXN-110257,2026-08-27,Scam: purchase / investment (APP),437.62,Lost by account holder,payer,Chen Garcia
+DSP-00101,CUS-10216,TXN-110435,2026-07-22,Item not as described,147.21,Resolved: seller won,buyer,Tomas Mensah
+DSP-00102,CUS-10216,TXN-110446,2026-08-06,Item not received,25.22,Resolved: refunded,buyer,Rafael Ivanova
+DSP-00103,CUS-10217,TXN-110464,2026-08-29,Unauthorised transaction,785.49,Lost by account holder,payer,Novak Group
+DSP-00104,CUS-10221,TXN-110690,2026-08-27,Unauthorised transaction,609.7,Open,payer,Mia Rossi
+DSP-00105,CUS-10221,TXN-110698,2026-08-28,Scam: purchase / investment (APP),891.66,Lost by account holder,payer,Liam Santos
+DSP-00106,CUS-10223,TXN-110801,2026-06-20,Item not as described,155.17,Resolved: refunded,buyer,Liam Lopez
+DSP-00107,CUS-10223,TXN-110793,2026-08-12,Item not received,42.7,Resolved: refunded,buyer,Tomas Nowak
+DSP-00108,CUS-10229,TXN-111115,2026-08-19,Unauthorised transaction,286.69,Resolved: withdrawn by payer,payer,Nora Lindqvist
+DSP-00109,CUS-10230,TXN-111169,2026-08-18,Scam: purchase / investment (APP),748.28,Open,payer,Ana Tanaka
+DSP-00110,CUS-10230,TXN-111171,2026-08-22,Unauthorised transaction,894.8,Lost by account holder,payer,Samir Sato
+DSP-00111,CUS-10230,TXN-111170,2026-08-12,Scam: purchase / investment (APP),413.7,Open,payer,Liam Okafor
+DSP-00112,CUS-10230,TXN-111118,2026-09-01,Unauthorised transaction,1112.65,Open,payer,Tanaka Hospital
+DSP-00113,CUS-10230,TXN-111173,2026-08-14,Scam: purchase / investment (APP),714.23,Open,payer,Hannah Santos
+DSP-00114,CUS-10236,TXN-111443,2026-08-25,Unauthorised transaction,582.1,Open,payer,Emil Tanaka
+DSP-00115,CUS-10236,TXN-111441,2026-08-25,Scam: purchase / investment (APP),586.27,Lost by account holder,payer,Sofia Schmidt
+DSP-00116,CUS-10236,TXN-111458,2026-08-22,Unauthorised transaction,771.05,Open,payer,Olga Rossi
+DSP-00117,CUS-10239,TXN-111617,2026-08-05,Item not received,152.29,Resolved: seller won,buyer,Zara Nasser
+DSP-00118,CUS-10239,TXN-111587,2026-06-30,Item not received,80.77,Resolved: seller won,buyer,Elena Nasser
+DSP-00119,CUS-10239,TXN-111594,2026-06-07,Item not received,54.39,Resolved: seller won,buyer,Aoife Sato
+DSP-00120,CUS-10239,TXN-111644,2026-08-23,Item not as described,116.04,Resolved: refunded,buyer,Ana Silva
+DSP-00121,CUS-10239,TXN-111641,2026-08-16,Item not received,232.36,Resolved: seller won,buyer,Ciara Garcia
+DSP-00122,CUS-10239,TXN-111595,2026-07-24,Item not received,238.88,Resolved: seller won,buyer,Emil Costa
+DSP-00123,CUS-10243,TXN-111844,2026-08-18,Item not as described,117.63,Resolved: refunded,buyer,Priya Novak
+DSP-00124,CUS-10244,TXN-111916,2026-08-08,Scam: purchase / investment (APP),712.77,Open,payer,Hannah Fischer
+DSP-00125,CUS-10244,TXN-111904,2026-08-13,Unauthorised transaction,199.35,Open,payer,Ines Kelly
+DSP-00126,CUS-10244,TXN-111914,2026-08-28,Scam: purchase / investment (APP),514.0,Lost by account holder,payer,Elena Popescu
+DSP-00127,CUS-10246,TXN-112056,2026-06-08,Item not as described,136.01,Resolved: refunded,buyer,Clara Brennan
+DSP-00128,CUS-10246,TXN-112030,2026-06-12,Item not as described,149.75,Resolved: refunded,buyer,Ibrahim Nasser
+DSP-00129,CUS-10246,TXN-112058,2026-07-06,Item not received,117.26,Resolved: seller won,buyer,Olga Nasser
+DSP-00130,CUS-10246,TXN-112039,2026-06-20,Item not received,99.58,Resolved: seller won,buyer,Clara Popescu

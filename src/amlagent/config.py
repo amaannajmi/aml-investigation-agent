@@ -33,6 +33,9 @@ LARGE_CREDIT_MIN = 5_000.0
 # --- Sanctions screening ------------------------------------------------------
 SANCTIONS_MATCH_THRESHOLD = 88          # fuzzy score (0-100) treated as a potential match
 
+# --- Link analysis --------------------------------------------------------------
+LINK_SUPPRESS_CARDINALITY = 25          # identifiers shared by more accounts than this are treated as noise
+
 # --- Guardrail policy ---------------------------------------------------------
 # A CLOSE recommendation below this confidence is never auto-closed: it goes to a human.
 AUTO_CLOSE_MIN_CONFIDENCE = float(os.getenv("AML_AUTO_CLOSE_MIN_CONFIDENCE", "0.85"))

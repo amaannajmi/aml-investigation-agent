@@ -178,13 +178,13 @@ def render_report(m: dict, res: pd.DataFrame, agent, run_id: str) -> str:
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--agent", choices=["baseline", "claude"], default="baseline")
+    ap.add_argument("--agent", choices=["baseline", "baseline_v1", "claude"], default="baseline")
     ap.add_argument("--limit", type=int, default=None)
     ap.add_argument("--no-audit", action="store_true")
     a = ap.parse_args()
     m, _, run_id = run(a.agent, a.limit, not a.no_audit)
     print(json.dumps({k: v for k, v in m.items() if not isinstance(v, dict)}, indent=2))
-    print(f"Report: {C.REPORTS_DIR / f'eval_report_{a.agent}.md'}  ·  audit: {C.AUDIT_DIR / run_id}")
+    print(f"Report: {C.REPORTS_DIR / f'eval_report_{a.agent}.md'}  |  audit: {C.AUDIT_DIR / run_id}")
 
 
 if __name__ == "__main__":

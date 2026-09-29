@@ -17,23 +17,58 @@ from rapidfuzz import fuzz, process
 from . import config as C
 
 
+KYC_FIELDS = ["customer_id", "customer_name", "customer_type", "occupation", "expected_monthly_inflow_eur",
+              "onboarding_date", "residence_country", "nationality", "risk_rating", "declared_counterparty_countries"]
+IDENTITY_FIELDS = ["customer_id", "signup_date", "signup_ip", "signup_country", "signup_device_id", "phone", "email",
+                   "home_city", "account_status", "status_reason", "prior_sar"]
+ADVERSE_STATUSES = {"CLOSED", "LIMITED"}
+VICTIM_REASONS = ("Unauthorised", "Scam")
+SANCTIONED_LOGIN_COUNTRIES = {"RU", "BY", "IR", "KP", "SY"}
+
+# How much a shared identifier means. Devices, bank accounts and phone numbers are rarely shared by strangers;
+# IP addresses often are (households, offices, mobile carrier NAT, public wi-fi, VPNs).
+BASE_STRENGTH = {"device_id": "strong", "bank_fingerprint": "strong", "phone": "strong", "email": "strong",
+                 "visitor_id": "medium", "ip": "weak"}
+STRENGTH_RANK = {"strong": 3, "medium": 2, "weak": 1}
+
+
 @dataclass
 class CaseData:
     customers: pd.DataFrame
     transactions: pd.DataFrame
     alerts: pd.DataFrame
     sanctions: pd.DataFrame
+    logins: pd.DataFrame | None = None
+    instruments: pd.DataFrame | None = None
+    disputes: pd.DataFrame | None = None
 
     @classmethod
     def load(cls, data_dir=C.DATA_DIR) -> "CaseData":
         tx = pd.read_csv(data_dir / "transactions.csv")
         tx["timestamp"] = pd.to_datetime(tx["timestamp"], format="ISO8601")
+
+        def opt(name, **kw):
+            p = data_dir / f"{name}.csv"
+            return pd.read_csv(p, **kw) if p.exists() else None
+
+        logins = opt("logins")
+        if logins is not None:
+            logins["timestamp"] = pd.to_datetime(logins["timestamp"], format="ISO8601")
+        customers = pd.read_csv(data_dir / "customers.csv")
+        for col in ("prior_sar", "in_alert_queue"):
+            if col in customers:
+                customers[col] = customers[col].astype(str).str.lower().eq("true")
         return cls(
-            customers=pd.read_csv(data_dir / "customers.csv").fillna(""),
+            customers=customers.fillna(""),
             transactions=tx.fillna({"reference": ""}),
             alerts=pd.read_csv(data_dir / "alerts.csv"),
             sanctions=pd.read_csv(data_dir / "sanctions_list.csv"),
+            logins=logins, instruments=opt("instruments"), disputes=opt("disputes"),
         )
+
+    @property
+    def has_identity(self) -> bool:
+        return self.logins is not None
 
     @cached_property
     def _tx_by_customer(self) -> dict[str, pd.DataFrame]:
@@ -42,9 +77,40 @@ class CaseData:
     def txns(self, customer_id: str) -> pd.DataFrame:
         return self._tx_by_customer.get(customer_id, self.transactions.iloc[0:0])
 
+    @cached_property
+    def link_index(self) -> dict[tuple[str, str], set[str]]:
+        """(identifier type, value) -> customers that have used it."""
+        idx: dict[tuple[str, str], set[str]] = {}
+
+        def add(kind, value, cid):
+            if value is not None and str(value) not in ("", "nan"):
+                idx.setdefault((kind, str(value)), set()).add(cid)
+
+        if not self.has_identity:
+            return idx
+        for r in self.logins[["customer_id", "ip", "device_id", "visitor_id"]].itertuples(index=False):
+            add("ip", r.ip, r.customer_id)
+            add("device_id", r.device_id, r.customer_id)
+            add("visitor_id", r.visitor_id, r.customer_id)
+        for r in self.customers[["customer_id", "phone", "email", "signup_ip", "signup_device_id"]].itertuples(index=False):
+            add("phone", r.phone, r.customer_id)
+            add("email", r.email, r.customer_id)
+            add("ip", r.signup_ip, r.customer_id)
+            add("device_id", r.signup_device_id, r.customer_id)
+        for r in self.instruments[["customer_id", "fingerprint"]].itertuples(index=False):
+            add("bank_fingerprint", r.fingerprint, r.customer_id)
+        return idx
+
+    @cached_property
+    def ip_types(self) -> dict[str, str]:
+        if not self.has_identity:
+            return {}
+        return self.logins.groupby("ip").ip_type.agg(lambda s: s.mode().iat[0]).to_dict()
+
 
 class Toolbox:
-    """Tools bound to one alert. Agents cannot query other customers."""
+    """Tools bound to one alert. Agents see the alerted customer in full; for linked accounts they see only
+    what an investigator's link-analysis screen shows (status, reason, what is shared), never their activity."""
 
     def __init__(self, data: CaseData, alert_id: str):
         row = data.alerts.loc[data.alerts.alert_id == alert_id]
@@ -64,8 +130,8 @@ class Toolbox:
 
     def get_customer_profile(self) -> dict:
         """KYC profile: type, occupation/business activity, expected activity, risk rating."""
-        c = self.data.customers.loc[self.data.customers.customer_id == self.customer_id].iloc[0].to_dict()
-        return {k: (float(v) if k == "expected_monthly_inflow_eur" else v) for k, v in c.items()}
+        c = self._customer_row(self.customer_id)
+        return {k: (float(c[k]) if k == "expected_monthly_inflow_eur" else c[k]) for k in KYC_FIELDS if k in c}
 
     def get_transactions(self, period: str = "window", direction: str = "ALL", min_amount: float = 0.0,
                          limit: int = 150) -> dict:
@@ -195,7 +261,166 @@ class Toolbox:
                 "countries": sorted(hrj.counterparty_country.unique().tolist()),
                 "declared_ties": sorted(declared), "high_risk_txn_ids": hrj.txn_id.tolist(),
             },
+        } | (self._identity_indicators() if self.data.has_identity else {})
+
+    # ------------------------------------------------------------ identity, access and network tools (v2)
+    def get_identity_profile(self) -> dict:
+        """Sign-up details and account standing: sign-up date, IP, country and device, phone, email, status."""
+        c = self._customer_row(self.customer_id)
+        out = {k: c.get(k) for k in IDENTITY_FIELDS if k in c}
+        out["account_age_days"] = (self.as_of - datetime.fromisoformat(str(c["signup_date"]))).days
+        return out
+
+    def get_login_history(self, limit: int = 10) -> dict:
+        """Most recent logins (newest first) with IP, IP type, location, device ID (DID) and visitor ID (VID).
+        Flags devices first seen inside the alert window."""
+        lg = self._logins()
+        first_seen = lg.groupby("device_id").timestamp.min()
+        signup_dev = self._customer_row(self.customer_id).get("signup_device_id")
+        rows = lg.sort_values("timestamp", ascending=False).head(max(1, min(int(limit), 100))).copy()
+        rows["new_device_in_window"] = rows.device_id.map(lambda d: bool(first_seen[d] >= self.window_start and d != signup_dev))
+        rows["timestamp"] = rows.timestamp.dt.strftime("%Y-%m-%d %H:%M")
+        return {"customer_id": self.customer_id, "total_logins_90d": int(len(lg)),
+                "distinct_devices_90d": int(lg.device_id.nunique()), "distinct_ips_90d": int(lg.ip.nunique()),
+                "countries_90d": sorted(lg.country.unique().tolist()),
+                "logins": rows.drop(columns=["customer_id"]).to_dict("records")}
+
+    def get_linked_accounts(self) -> dict:
+        """Other accounts that share an identifier with this customer (device ID, visitor ID, IP, phone, email,
+        bank account / card fingerprint). Each link has a strength: IPs are weak on their own (households,
+        mobile carriers, public wi-fi and VPNs are shared by many people); devices, bank accounts and phone
+        numbers are strong. `accounts_sharing` is how many accounts use that identifier in total."""
+        mine = self._my_identifiers()
+        links: dict[str, dict] = {}
+        suppressed = []
+        for (kind, value), extra in mine.items():
+            holders = self.data.link_index.get((kind, value), set())
+            others = holders - {self.customer_id}
+            if not others:
+                continue
+            if len(holders) > C.LINK_SUPPRESS_CARDINALITY:     # "super-node": carrier NAT, big public hotspot, VPN exit
+                suppressed.append({"identifier_type": kind, "value": value, "accounts_sharing": len(holders),
+                                   "ip_type": self.data.ip_types.get(value) if kind == "ip" else None})
+                continue
+            strength = self._link_strength(kind, value, len(holders))
+            for oc in others:
+                e = links.setdefault(oc, {"shared": []})
+                e["shared"].append({"identifier_type": kind, "value": value, "strength": strength,
+                                    "accounts_sharing": len(holders), **extra})
+        out = []
+        for oc, e in links.items():
+            r = self._customer_row(oc)
+            strongest = max(e["shared"], key=lambda x: STRENGTH_RANK[x["strength"]])["strength"]
+            out.append({"customer_id": oc, "customer_name": r["customer_name"], "account_status": r["account_status"],
+                        "status_reason": r["status_reason"], "prior_sar": bool(r["prior_sar"]),
+                        "in_alert_queue": bool(r["in_alert_queue"]), "onboarding_date": r["onboarding_date"],
+                        "is_adverse": self._is_adverse(r), "strongest_link": strongest, "shared": e["shared"]})
+        out.sort(key=lambda x: (-STRENGTH_RANK[x["strongest_link"]], not x["is_adverse"], x["customer_id"]))
+        return {"customer_id": self.customer_id, "linked_account_count": len(out),
+                "adverse_linked_accounts": sum(1 for o in out if o["is_adverse"]), "linked_accounts": out,
+                "suppressed_high_cardinality_identifiers": suppressed,
+                "note": f"Identifiers shared by more than {C.LINK_SUPPRESS_CARDINALITY} accounts are suppressed as non-informative."}
+
+    def get_disputes(self) -> dict:
+        """Disputes and claims raised against this account's transactions, e.g. a payer saying a payment
+        was unauthorised or a scam (a victim-funds signal), or a buyer saying goods never arrived."""
+        d = self._disputes()
+        return {"customer_id": self.customer_id, "count": int(len(d)),
+                "disputes": d.drop(columns=["customer_id"]).to_dict("records")}
+
+    def _identity_indicators(self) -> dict:
+        lg = self._logins()
+        win = lg[lg.timestamp >= self.window_start]
+        c = self._customer_row(self.customer_id)
+        first_seen = lg.groupby("device_id").timestamp.min()
+        new_devs = [d for d, t in first_seen.items() if t >= self.window_start and d != c.get("signup_device_id")]
+        home = c.get("residence_country", "IE")
+        foreign = win[win.country != home]
+        vpn = win[win.ip_type == "hosting_vpn"]
+        sanc = win[win.country.isin(SANCTIONED_LOGIN_COUNTRIES)]
+        links = self.get_linked_accounts()["linked_accounts"]
+        adverse = [l for l in links if l["is_adverse"] and STRENGTH_RANK[l["strongest_link"]] >= 2]
+        d = self._disputes()
+        victim = d[(d.filed_by == "payer") & d.reason.str.startswith(VICTIM_REASONS)] if len(d) else d
+        inbound_w = self._period("window")
+        inbound_w = inbound_w[inbound_w.direction == "IN"]
+        return {
+            "access": {
+                "logins_window": int(len(win)), "distinct_devices_window": int(win.device_id.nunique()),
+                "new_devices_window": new_devs,
+                "new_device_login_share_window": round(float(win.device_id.isin(new_devs).mean()), 3) if len(win) else 0.0,
+                "foreign_login_countries_window": sorted(foreign.country.unique().tolist()),
+                "foreign_login_share_window": round(len(foreign) / len(win), 3) if len(win) else 0.0,
+                "vpn_hosting_login_share_window": round(len(vpn) / len(win), 3) if len(win) else 0.0,
+                "sanctioned_country_logins_window": int(len(sanc)),
+                "evidence_login_ids": (win[win.device_id.isin(new_devs)].login_id.tolist() + foreign.login_id.tolist())[:15],
+            },
+            "network": {
+                "linked_accounts": len(links),
+                "strong_links": sum(1 for l in links if l["strongest_link"] == "strong"),
+                "adverse_links_medium_or_strong": len(adverse),
+                "adverse_linked_ids": [l["customer_id"] for l in adverse],
+                "adverse_with_prior_sar": sum(1 for l in adverse if l["prior_sar"]),
+                "adverse_typologies": sorted({self._customer_row(l["customer_id"]).get("status_typology") for l in adverse} - {"", None}),
+                "adverse_shared_identifier_types": sorted({s["identifier_type"] for l in adverse for s in l["shared"]
+                                                          if STRENGTH_RANK[s["strength"]] >= 2}),
+                "weak_only_links": sum(1 for l in links if l["strongest_link"] == "weak"),
+                "clean_medium_links": sum(1 for l in links if l["strongest_link"] == "medium" and not l["is_adverse"]),
+            },
+            "disputes": {
+                "total": int(len(d)), "victim_claims": int(len(victim)),
+                "victim_claim_share_of_inbound_window": round(len(victim) / max(len(inbound_w), 1), 3),
+                "buyer_claims": int((d.filed_by == "buyer").sum()) if len(d) else 0,
+                "open": int(d.status.str.startswith("Open").sum()) if len(d) else 0,
+                "victim_claim_ids": victim.dispute_id.tolist() if len(d) else [],
+                "victim_claim_txn_ids": victim.txn_id.tolist() if len(d) else [],
+            },
         }
+
+    def _my_identifiers(self) -> dict[tuple[str, str], dict]:
+        """This customer's identifiers, with the login IDs that show each one being used."""
+        ids: dict[tuple[str, str], dict] = {}
+        lg = self._logins()
+        for kind in ("ip", "device_id", "visitor_id"):
+            for value, g in lg.groupby(kind):
+                ids[(kind, str(value))] = {"ip_type": self.data.ip_types.get(value)} if kind == "ip" else {}
+                ids[(kind, str(value))]["evidence_login_ids"] = g.sort_values("timestamp").login_id.tolist()[-3:]
+        c = self._customer_row(self.customer_id)
+        for kind, col in (("phone", "phone"), ("email", "email"), ("device_id", "signup_device_id"), ("ip", "signup_ip")):
+            if c.get(col):
+                ids.setdefault((kind, str(c[col])), {"source": "sign-up" if col.startswith("signup") else "profile"})
+        if self.data.instruments is not None:
+            for r in self.data.instruments[self.data.instruments.customer_id == self.customer_id].itertuples():
+                ids[("bank_fingerprint", r.fingerprint)] = {"instrument": f"{r.type} {r.masked} ({r.bank_country})",
+                                                            "instrument_id": r.instrument_id}
+        return ids
+
+    def _link_strength(self, kind: str, value: str, cardinality: int) -> str:
+        s = BASE_STRENGTH[kind]
+        if kind == "ip" and self.data.ip_types.get(value) == "residential" and cardinality <= 4:
+            s = "medium"                                  # a small shared household or office
+        if cardinality > 10 and s != "weak":
+            s = "medium" if s == "strong" else "weak"     # identifiers shared by many accounts carry less signal
+        return s
+
+    @staticmethod
+    def _is_adverse(r) -> bool:
+        return r.get("account_status") in ADVERSE_STATUSES or bool(r.get("prior_sar"))
+
+    def _customer_row(self, cid: str) -> dict:
+        return self.data.customers.loc[self.data.customers.customer_id == cid].iloc[0].to_dict()
+
+    def _logins(self) -> pd.DataFrame:
+        if not self.data.has_identity:
+            return pd.DataFrame(columns=["login_id", "customer_id", "timestamp", "ip", "ip_type", "country", "device_id", "visitor_id"])
+        lg = self.data.logins
+        lg = lg[(lg.customer_id == self.customer_id) & (lg.timestamp <= self.as_of)]
+        return lg
+
+    def _disputes(self) -> pd.DataFrame:
+        if self.data.disputes is None:
+            return pd.DataFrame(columns=["dispute_id", "customer_id", "txn_id", "reason", "status", "filed_by"])
+        return self.data.disputes[self.data.disputes.customer_id == self.customer_id]
 
     # ---------------------------------------------------------------- helpers
     def _period(self, period: str) -> pd.DataFrame:
@@ -209,6 +434,14 @@ class Toolbox:
 
     def all_txn_ids(self) -> set[str]:
         return set(self.data.txns(self.customer_id).txn_id)
+
+    def all_evidence_ids(self) -> set[str]:
+        """Every ID the agent may legitimately cite: its transactions, logins, disputes, and linked accounts."""
+        ids = self.all_txn_ids() | {self.customer_id}
+        if self.data.has_identity:
+            ids |= set(self._logins().login_id) | set(self._disputes().dispute_id)
+            ids |= {l["customer_id"] for l in self.get_linked_accounts()["linked_accounts"]}
+        return ids
 
     def txn_lookup(self) -> dict[str, dict]:
         return self.data.txns(self.customer_id).set_index("txn_id").to_dict("index")
@@ -227,6 +460,14 @@ TOOL_SPECS = [
          "min_amount": {"type": "number"}, "limit": {"type": "integer", "maximum": 300}}}},
     {"name": "screen_counterparties", "description": "Fuzzy-screen the customer and all counterparties against the sanctions list. Returns scores, list entries, whether countries match and the linked transaction IDs.",
      "input_schema": {"type": "object", "properties": {}}},
-    {"name": "compute_risk_indicators", "description": "Deterministic behavioural metrics for the alert window versus the customer's own history: cash near threshold, pass-through ratios (external vs own-account), unique payers, crypto outflows, high-risk jurisdiction exposure. Includes supporting transaction IDs.",
+    {"name": "get_identity_profile", "description": "Sign-up date, sign-up IP, country and device, phone, email, account age, account status and whether a SAR was filed before.",
+     "input_schema": {"type": "object", "properties": {}}},
+    {"name": "get_login_history", "description": "Most recent logins, newest first: IP, IP type (residential, mobile, public_wifi, hosting_vpn), city, country, device ID (DID), visitor ID (VID) and whether the device is new in the alert window.",
+     "input_schema": {"type": "object", "properties": {"limit": {"type": "integer", "maximum": 100}}}},
+    {"name": "get_linked_accounts", "description": "Accounts sharing an identifier with this customer (device, visitor ID, IP, phone, email, bank account or card fingerprint), with link strength, how many accounts share it, and each linked account's status, status reason and prior SAR flag.",
+     "input_schema": {"type": "object", "properties": {}}},
+    {"name": "get_disputes", "description": "Disputes raised on this account's transactions: who filed (payer or buyer), reason (unauthorised, scam, item not received), amount, status.",
+     "input_schema": {"type": "object", "properties": {}}},
+    {"name": "compute_risk_indicators", "description": "Deterministic behavioural metrics for the alert window versus the customer's own history: cash near threshold, pass-through ratios (external vs own-account), unique payers, crypto outflows, high-risk jurisdiction exposure; plus access (new devices, foreign and VPN logins), network (links to closed or limited accounts) and dispute metrics. Includes supporting IDs.",
      "input_schema": {"type": "object", "properties": {}}},
 ]

@@ -8,6 +8,12 @@ Written as a product owner reading the evaluation, not as the engineer who built
 2. **The guardrails carry recall.** Model recall is 81%, system recall is 100%, because every miss was a low-confidence close that routed to a human. The confidence gate is the most important safety feature in the system, and its threshold is a product decision about the trade-off between workload saved and risk accepted.
 3. **Auto-close is where the value is, and where the risk is.** Two thirds of benign alerts auto-close. Each point of auto-close rate is analyst time saved; each wrongly auto-closed suspicious alert is a potential regulatory finding. These have to be managed together, never optimised separately.
 
+## What v2 (identity, network, disputes) showed
+
+4. **Who controls the account and who it is connected to matters as much as what the money did.** Adding logins, devices, link analysis and disputes lifted rules recall from 81% to 94% and cleared 75% of the student shared-expense false positives, which v1 escalated every time.
+5. **Link strength is a product decision, not a detail.** Treating a shared IP like a shared device would flag every flat-share and every mobile user. Grading links and suppressing super-nodes is what makes the network view usable.
+6. **The remaining errors need reading, not counting.** A withdrawn dispute, a device used by a closed account months *before* this customer had it, a fresh mule with a new device and nothing else. Rules count; the LLM agent has to read status and timing. That is the test for `make eval-claude`.
+
 ## Priorities
 
 | # | Item | Why now | How we will know it worked |
@@ -16,7 +22,8 @@ Written as a product owner reading the evaluation, not as the engineer who built
 | 2 | Transliteration-aware screening (phonetic + transliteration variants + secondary identifiers) | 0% recall on a sanctions scenario is not acceptable in any product | Transliteration recall > 90% at an unchanged false-hit rate |
 | 3 | Reviewer override loop | Overrides are free, expert-labelled data | Override reasons categorised weekly; top category becomes the next eval scenario |
 | 4 | Confidence calibration report | The auto-close gate only works if 0.9 confidence means about 90% correct | Calibration curve within ±5 points per bucket |
-| 5 | Prompt-injection tests on free-text fields | Payment references are attacker-controlled | Red-team scenarios added to the eval; zero dispositions changed by injected text |
+| 5 | Time-aware link analysis (overlapping vs sequential device use) and dispute-status weighting | The two v2 false-positive traps | Second-hand-phone and withdrawn-dispute cases cleared, mule recall unchanged |
+| 6 | Prompt-injection tests on free-text fields | Payment references are attacker-controlled | Red-team scenarios added to the eval; zero dispositions changed by injected text |
 
 ## What I would not build yet
 

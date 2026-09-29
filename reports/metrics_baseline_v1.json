@@ -1,0 +1,127 @@
+{
+  "alerts": 248,
+  "suspicious": 104,
+  "benign": 144,
+  "model_recall": 0.808,
+  "system_recall_after_guardrails": 1.0,
+  "missed_suspicious": 20,
+  "missed_after_guardrails": 0,
+  "fp_clearance_rate": 0.917,
+  "auto_close_rate_benign": 0.667,
+  "escalation_precision": 0.875,
+  "sar_recommendations": 61,
+  "typology_accuracy_on_caught": 0.905,
+  "guardrail_violation_rate": 0.0,
+  "narrative_structure_pass_rate_escalations": 1.0,
+  "recall_by_scenario": {
+    "high_risk_jurisdiction": {
+      "n": 16,
+      "rate": 1.0
+    },
+    "money_mule": {
+      "n": 16,
+      "rate": 1.0
+    },
+    "mule_cash_out": {
+      "n": 12,
+      "rate": 0.583
+    },
+    "pass_through": {
+      "n": 16,
+      "rate": 1.0
+    },
+    "sanctions_exposure": {
+      "n": 16,
+      "rate": 0.812
+    },
+    "sanctions_transliteration": {
+      "n": 12,
+      "rate": 0.0
+    },
+    "structuring": {
+      "n": 16,
+      "rate": 1.0
+    }
+  },
+  "recall_by_variant": {
+    "hard": {
+      "n": 33,
+      "rate": 0.788
+    },
+    "standard": {
+      "n": 71,
+      "rate": 0.817
+    }
+  },
+  "clearance_by_scenario": {
+    "cash_intensive_business": {
+      "n": 24,
+      "rate": 1.0
+    },
+    "new_cash_business": {
+      "n": 12,
+      "rate": 1.0
+    },
+    "one_off_large_credit": {
+      "n": 24,
+      "rate": 1.0
+    },
+    "online_retailer": {
+      "n": 24,
+      "rate": 1.0
+    },
+    "own_account_sweep": {
+      "n": 24,
+      "rate": 1.0
+    },
+    "sanctions_false_hit": {
+      "n": 24,
+      "rate": 1.0
+    },
+    "shared_expenses": {
+      "n": 12,
+      "rate": 0.0
+    }
+  },
+  "auto_close_by_scenario": {
+    "cash_intensive_business": {
+      "n": 24,
+      "rate": 1.0
+    },
+    "new_cash_business": {
+      "n": 12,
+      "rate": 0.0
+    },
+    "one_off_large_credit": {
+      "n": 24,
+      "rate": 1.0
+    },
+    "online_retailer": {
+      "n": 24,
+      "rate": 1.0
+    },
+    "own_account_sweep": {
+      "n": 24,
+      "rate": 1.0
+    },
+    "sanctions_false_hit": {
+      "n": 24,
+      "rate": 0.0
+    },
+    "shared_expenses": {
+      "n": 12,
+      "rate": 0.0
+    }
+  },
+  "workload": {
+    "manual_hours": 186.0,
+    "assisted_hours": 35.2,
+    "hours_saved_pct": 0.811,
+    "assumptions_minutes": {
+      "manual_per_alert": 45,
+      "review_per_agent_case": 12,
+      "qa_per_auto_close": 3
+    }
+  },
+  "mean_seconds_per_alert": 0.118
+}

@@ -7,6 +7,7 @@ Produces a realistic-looking alert queue for a payments / e-money firm:
 * alerts.csv         one transaction-monitoring alert per customer (what an analyst sees)
 * ground_truth.csv   the label and typology for each alert (hidden from the agent)
 * sanctions_list.csv a small, entirely fictional sanctions list
+* logins.csv, instruments.csv, disputes.csv and extra network accounts: see identity_gen.py (v2)
 
 Five suspicious typologies and five benign "false positive" scenarios are
 generated. Each has a standard and a harder variant, so an evaluation shows
@@ -390,7 +391,8 @@ class Builder:
                        0, "none", "new_cash_business", "hard" if hard else "standard")
 
 
-def generate(seed: int = 42, per_suspicious: int = 16, per_benign: int = 24, per_ambiguous: int = 12) -> dict[str, pd.DataFrame]:
+def generate(seed: int = 42, per_suspicious: int = 16, per_benign: int = 24, per_ambiguous: int = 12,
+             with_identity: bool = True) -> dict[str, pd.DataFrame]:
     b = Builder(rng=np.random.default_rng(seed))
     cid_seq = iter(range(10001, 99999))
     suspicious = [b.structuring, b.pass_through, b.mule, b.high_risk_jurisdiction, b.sanctions]
@@ -412,13 +414,17 @@ def generate(seed: int = 42, per_suspicious: int = 16, per_benign: int = 24, per
         else:
             fn(cid, hard)
     txns = pd.DataFrame(b.txns).sort_values(["customer_id", "timestamp"]).reset_index(drop=True)
-    return {
+    frames = {
         "customers": pd.DataFrame(b.customers),
         "transactions": txns,
         "alerts": pd.DataFrame(b.alerts),
         "ground_truth": pd.DataFrame(b.truth),
         "sanctions_list": pd.DataFrame(SANCTIONS, columns=["list_id", "name", "party_type", "country", "programme"]),
     }
+    if not with_identity:
+        return frames
+    from .identity_gen import add_identity_layer   # v2: identity, logins, devices, instruments, disputes, network accounts
+    return add_identity_layer(frames, seed)
 
 
 def main() -> None:
@@ -430,8 +436,9 @@ def main() -> None:
     for name, df in frames.items():
         df.to_csv(DATA_DIR / f"{name}.csv", index=False)
     gt = frames["ground_truth"]
-    print(f"Wrote {len(frames['alerts'])} alerts, {len(frames['customers'])} customers, "
-          f"{len(frames['transactions'])} transactions to {DATA_DIR}")
+    print(f"Wrote {len(frames['alerts'])} alerts, {len(frames['customers'])} customers "
+          f"({int(frames['customers'].in_alert_queue.sum())} alerted + network accounts), {len(frames['transactions'])} transactions, "
+          f"{len(frames['logins'])} logins, {len(frames['instruments'])} instruments, {len(frames['disputes'])} disputes to {DATA_DIR}")
     print(gt.groupby(["is_suspicious", "scenario"]).size().to_string())
 
 
