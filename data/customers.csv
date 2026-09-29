@@ -1,0 +1,249 @@
+customer_id,onboarding_date,residence_country,nationality,risk_rating,declared_counterparty_countries,customer_name,customer_type,occupation,expected_monthly_inflow_eur
+CUS-10001,2020-03-24,IE,DE,Low,,Priya Meyer,Individual,Unemployed,800.0
+CUS-10002,2025-01-03,IE,BE,Low,,Walsh Restaurant Ltd,Business,Restaurant,60000.0
+CUS-10003,2020-10-26,IE,AT,Low,,Sofia Keller,Individual,Solicitor,5200.0
+CUS-10004,2019-12-09,IE,AT,Low,,Tomas Haddad,Individual,Warehouse operative,1900.0
+CUS-10005,2022-08-02,IE,FR,Low,,Schmidt Freight Ltd,Business,Freight forwarding,55000.0
+CUS-10006,2022-11-16,IE,ES,Low,,Arjun Nowak,Individual,Part-time retail,600.0
+CUS-10007,2022-10-14,IE,NL,Low,,Daniel Kowalski,Individual,Solicitor,8000.0
+CUS-10008,2025-04-22,IE,AT,Low,,Ines Dubois,Individual,Sales manager,5000.0
+CUS-10009,2021-01-27,IE,DE,Low,,Haddad Online Ltd,Business,Online retail (e-commerce),40000.0
+CUS-10010,2022-02-16,IE,NL,Low,,Keller Engineering Ltd,Business,Engineering services,55000.0
+CUS-10011,2025-12-03,IE,IT,Low,,Ibrahim Lindqvist,Individual,Consultant,6500.0
+CUS-10012,2025-02-10,IE,NL,Low,,Brennan Metals Ltd,Business,Metals trading,70000.0
+CUS-10013,2024-12-10,IE,IT,Low,,Keller Restaurant Ltd,Business,Restaurant,45000.0
+CUS-10014,2025-09-01,IE,ES,Low,,Emil Rossi,Individual,Freelance photographer,2300.0
+CUS-10015,2021-02-24,IE,IE,Low,,Okafor Freight Ltd,Business,Freight forwarding,55000.0
+CUS-10016,2025-10-31,IE,IE,Low,,Kofi Lindqvist,Individual,Solicitor,8000.0
+CUS-10017,2022-08-09,IE,DE,Low,,Pavel Lindqvist,Individual,Software engineer,3500.0
+CUS-10018,2025-12-06,IE,DE,Low,,Kenji Mensah,Individual,Teacher,2800.0
+CUS-10019,2019-11-19,IE,AT,Low,,Aoife Schmidt,Individual,Student,900.0
+CUS-10020,2020-11-06,IE,AT,Low,,Kowalski Online Ltd,Business,Online retail (e-commerce),40000.0
+CUS-10021,2023-01-08,IE,PT,Low,,Samir Murphy,Individual,Sales manager,4200.0
+CUS-10022,2026-01-27,IE,AT,Low,,Okafor Engineering Ltd,Business,Engineering services,55000.0
+CUS-10023,2024-06-10,IE,AT,Low,,Moreau Industrial Ltd,Business,Industrial equipment import,70000.0
+CUS-10024,2025-04-23,IE,PT,Low,,Ibrahim Byrne,Individual,Solicitor,5200.0
+CUS-10025,2025-05-25,IE,AT,Low,,Arjun Rossi,Individual,Engineer,8000.0
+CUS-10026,2020-09-06,IE,IT,Low,,Tanaka Online Ltd,Business,Online retail (e-commerce),20000.0
+CUS-10027,2025-06-12,IE,IT,Low,,Olga Costa,Individual,Shipping broker,6000.0
+CUS-10028,2022-06-21,IE,FR,Low,,Fischer Takeaway Ltd,Business,Takeaway food,60000.0
+CUS-10029,2024-05-29,IE,PL,Low,,Chloe Weber,Individual,Engineer,8000.0
+CUS-10030,2023-11-20,IE,BE,Low,,Dubois Metals Ltd,Business,Metals trading,70000.0
+CUS-10031,2021-02-09,IE,IE,Low,,Okafor Restaurant Ltd,Business,Restaurant,45000.0
+CUS-10032,2020-12-16,IE,FR,Low,,Kofi Ivanova,Individual,Shipping broker,6000.0
+CUS-10033,2021-04-02,IE,ES,Low,,Felix Byrne,Individual,Student,900.0
+CUS-10034,2025-08-16,IE,AT,Low,,Santos Industrial Ltd,Business,Industrial equipment import,70000.0
+CUS-10035,2026-07-30,IE,IE,Medium,,Moreau Restaurant Ltd,Business,Restaurant,40000.0
+CUS-10036,2026-07-22,IE,FR,Medium,,Weber Restaurant Ltd,Business,Restaurant,55000.0
+CUS-10037,2023-05-12,IE,PT,Low,,Novak Auto Ltd,Business,Auto parts import,55000.0
+CUS-10038,2020-07-16,IE,FR,Low,,Rossi Online Ltd,Business,Online retail (e-commerce),30000.0
+CUS-10039,2022-04-16,IE,FR,Low,,Lena Nasser,Individual,Retired,2800.0
+CUS-10040,2020-04-09,IE,BE,Low,,Ciara Mensah,Individual,Retired,4100.0
+CUS-10041,2023-10-07,IE,PT,Low,,Arjun Fischer,Individual,Student,700.0
+CUS-10042,2022-04-20,IE,ES,Low,,Nowak Freight Ltd,Business,Freight forwarding,55000.0
+CUS-10043,2023-12-19,IE,BE,Low,,Oisin Tanaka,Individual,Retail assistant,3000.0
+CUS-10044,2025-07-02,IE,PL,Low,,Rossi Takeaway Ltd,Business,Takeaway food,35000.0
+CUS-10045,2023-09-23,IE,IE,Low,,Elena Horvat,Individual,Personal trainer,2300.0
+CUS-10046,2025-05-21,IE,IT,Low,,Chloe Nasser,Individual,Personal trainer,2300.0
+CUS-10047,2026-07-19,IE,NL,Medium,,Kelly Restaurant Ltd,Business,Restaurant,40000.0
+CUS-10048,2020-01-22,IE,AT,Low,,Horvat Engineering Ltd,Business,Engineering services,55000.0
+CUS-10049,2025-07-15,IE,AT,Low,,Brennan Consulting Ltd,Business,Consulting services,20000.0
+CUS-10050,2024-07-20,IE,AT,Low,,Mei Weber,Individual,Civil servant,3400.0
+CUS-10051,2021-10-10,IE,BE,Low,,Pavel Santos,Individual,Shipping broker,6000.0
+CUS-10052,2021-01-16,IE,PL,Low,,Clara Ivanova,Individual,Retired,4100.0
+CUS-10053,2022-02-01,IE,BE,Low,,Kowalski Freight Ltd,Business,Freight forwarding,55000.0
+CUS-10054,2025-03-24,IE,FR,Low,,Weber Online Ltd,Business,Online retail (e-commerce),20000.0
+CUS-10055,2026-07-25,IE,FR,Medium,,Rossi Restaurant Ltd,Business,Restaurant,55000.0
+CUS-10056,2024-06-24,IE,PT,Low,,Yuki Meyer,Individual,Student,600.0
+CUS-10057,2024-06-16,IE,NL,Low,,Mensah Online Ltd,Business,Online retail (e-commerce),20000.0
+CUS-10058,2021-09-28,IE,PL,Low,,Kumar Online Ltd,Business,Online retail (e-commerce),40000.0
+CUS-10059,2024-12-15,IE,BE,Low,,Walsh Freight Ltd,Business,Freight forwarding,55000.0
+CUS-10060,2023-06-02,IE,IE,Low,,Popescu Takeaway Ltd,Business,Takeaway food,60000.0
+CUS-10061,2023-06-04,IE,DE,Low,,Olga Haddad,Individual,Unemployed,900.0
+CUS-10062,2024-03-10,IE,BE,Low,,Mei Rossi,Individual,Delivery driver,1800.0
+CUS-10063,2022-10-21,IE,IE,Low,,Sato Online Ltd,Business,Online retail (e-commerce),30000.0
+CUS-10064,2026-07-31,IE,BE,Medium,,Walsh Restaurant Ltd,Business,Restaurant,55000.0
+CUS-10065,2020-03-06,IE,FR,Low,,Clara Okafor,Individual,Solicitor,8000.0
+CUS-10066,2020-06-13,IE,NL,Low,,Arjun Okafor,Individual,Student,800.0
+CUS-10067,2023-03-03,IE,DE,Low,,Emil Horvat,Individual,Retail assistant,2200.0
+CUS-10068,2022-10-13,IE,ES,Low,,Grace Nasser,Individual,Engineer,8000.0
+CUS-10069,2024-10-27,IE,BE,Low,,Daniel Haddad,Individual,Solicitor,6500.0
+CUS-10070,2022-02-27,IE,IE,Low,,Hannah Novak,Individual,Unemployed,900.0
+CUS-10071,2026-07-30,IE,DE,Medium,,Horvat Restaurant Ltd,Business,Restaurant,55000.0
+CUS-10072,2023-08-26,IE,DE,Low,,Kofi Meyer,Individual,Student,1400.0
+CUS-10073,2025-12-27,IE,PL,Low,,Kelly Takeaway Ltd,Business,Takeaway food,60000.0
+CUS-10074,2026-02-11,IE,PT,Low,,Clara Horvat,Individual,Retail assistant,3000.0
+CUS-10075,2026-07-30,IE,IE,Medium,,Nasser Restaurant Ltd,Business,Restaurant,55000.0
+CUS-10076,2023-11-12,IE,BE,Low,,Priya Schmidt,Individual,Software engineer,5000.0
+CUS-10077,2023-10-14,IE,DE,Low,,Kowalski Freight Ltd,Business,Freight forwarding,55000.0
+CUS-10078,2026-07-25,IE,DE,Medium,,Jansen Restaurant Ltd,Business,Restaurant,40000.0
+CUS-10079,2020-06-18,IE,IE,Low,,Priya Moreau,Individual,Barista,2600.0
+CUS-10080,2020-11-19,IE,PL,Low,,Nasser Restaurant Ltd,Business,Restaurant,60000.0
+CUS-10081,2023-05-07,IE,PL,Low,,Oisin Dubois,Individual,Shipping broker,6000.0
+CUS-10082,2022-10-22,IE,PL,Low,,Rafael Fischer,Individual,Teacher,3400.0
+CUS-10083,2023-08-02,IE,IT,Low,,Santos Freight Ltd,Business,Freight forwarding,45000.0
+CUS-10084,2020-10-01,IE,BE,Low,,Lena Mensah,Individual,Consultant,6500.0
+CUS-10085,2023-06-24,IE,PT,Low,,Clara Novak,Individual,Teacher,2800.0
+CUS-10086,2026-07-31,IE,BE,Medium,,Okafor Restaurant Ltd,Business,Restaurant,40000.0
+CUS-10087,2020-08-10,IE,IT,Low,,Priya Meyer,Individual,Consultant,6500.0
+CUS-10088,2021-10-04,IE,FR,Low,,Weber Restaurant Ltd,Business,Restaurant,60000.0
+CUS-10089,2021-08-17,IE,BE,Low,,Nasser Consulting Ltd,Business,Consulting services,15000.0
+CUS-10090,2022-06-22,IE,NL,Low,,Clara Schmidt,Individual,Freelance photographer,1800.0
+CUS-10091,2019-12-12,IE,IE,Low,,Ibrahim Ivanova,Individual,Nurse,4200.0
+CUS-10092,2025-09-29,IE,PL,Low,,Amara Okafor,Individual,Teacher,3400.0
+CUS-10093,2023-08-28,IE,IT,Low,,Omar Sato,Individual,Warehouse operative,1900.0
+CUS-10094,2020-09-04,IE,ES,Low,,Ines Santos,Individual,Student,600.0
+CUS-10095,2020-08-28,IE,NL,Low,,Noah Okafor,Individual,Shipping broker,6000.0
+CUS-10096,2025-09-22,IE,ES,Low,,Hannah Santos,Individual,Retired,3400.0
+CUS-10097,2023-08-07,IE,BE,Low,,Ivanova Takeaway Ltd,Business,Takeaway food,60000.0
+CUS-10098,2025-10-16,IE,AT,Low,,Popescu Convenience Ltd,Business,Convenience store,35000.0
+CUS-10099,2020-05-08,IE,AT,Low,,Ibrahim Nowak,Individual,Software engineer,5000.0
+CUS-10100,2020-02-19,IE,FR,Low,,Yuki Jansen,Individual,Sales manager,4200.0
+CUS-10101,2020-04-09,IE,IE,Low,,Olga Novak,Individual,Shipping broker,6000.0
+CUS-10102,2021-05-13,IE,ES,Low,,Mei Sato,Individual,Software engineer,4200.0
+CUS-10103,2021-06-21,IE,AT,Low,,Byrne Engineering Ltd,Business,Engineering services,55000.0
+CUS-10104,2020-07-19,IE,ES,Low,,Nowak Restaurant Ltd,Business,Restaurant,60000.0
+CUS-10105,2021-03-17,IE,PT,Low,,Hannah Nowak,Individual,Student,900.0
+CUS-10106,2021-09-21,IE,IT,Low,,Dubois Online Ltd,Business,Online retail (e-commerce),40000.0
+CUS-10107,2025-02-17,IE,NL,Low,,Santos Takeaway Ltd,Business,Takeaway food,45000.0
+CUS-10108,2022-09-05,IE,NL,Low,,Yuki Weber,Individual,Teacher,2800.0
+CUS-10109,2022-06-08,IE,NL,Low,,Pavel Kumar,Individual,Warehouse operative,2200.0
+CUS-10110,2026-07-26,IE,PT,Medium,,Lopez Restaurant Ltd,Business,Restaurant,40000.0
+CUS-10111,2025-02-13,IE,PL,Low,,Sato Auto Ltd,Business,Auto parts import,55000.0
+CUS-10112,2021-04-01,IE,PT,Low,,Mei Kumar,Individual,Consultant,5200.0
+CUS-10113,2022-10-19,IE,IE,Low,,Emil Garcia,Individual,Warehouse operative,3000.0
+CUS-10114,2021-08-01,IE,ES,Low,,Pavel Kowalski,Individual,Personal trainer,2300.0
+CUS-10115,2021-03-24,IE,FR,Low,,Dubois Freight Ltd,Business,Freight forwarding,55000.0
+CUS-10116,2025-01-08,IE,PL,Low,,Mensah Restaurant Ltd,Business,Restaurant,35000.0
+CUS-10117,2024-08-15,IE,AT,Low,,Grace Lopez,Individual,Civil servant,2800.0
+CUS-10118,2022-01-20,IE,NL,Low,,Ines Walsh,Individual,Software engineer,5000.0
+CUS-10119,2024-02-28,IE,IE,Low,,Fischer Metals Ltd,Business,Metals trading,70000.0
+CUS-10120,2025-07-05,IE,AT,Low,,Moreau Takeaway Ltd,Business,Takeaway food,45000.0
+CUS-10121,2026-02-06,IE,IT,Low,,Ines Ivanova,Individual,Civil servant,2800.0
+CUS-10122,2025-06-06,IE,DE,Low,,Omar Sato,Individual,Student,800.0
+CUS-10123,2020-08-27,IE,PL,Low,,Kenji Jansen,Individual,Consultant,5200.0
+CUS-10124,2022-10-15,IE,AT,Low,,Meyer Engineering Ltd,Business,Engineering services,55000.0
+CUS-10125,2026-07-22,IE,ES,Medium,,Brennan Restaurant Ltd,Business,Restaurant,40000.0
+CUS-10126,2021-07-24,IE,FR,Low,,Sofia Keller,Individual,Student,900.0
+CUS-10127,2019-11-28,IE,PT,Low,,Tomas Byrne,Individual,Retail assistant,2600.0
+CUS-10128,2021-12-11,IE,NL,Low,,Santos Online Ltd,Business,Online retail (e-commerce),40000.0
+CUS-10129,2020-04-09,IE,FR,Low,,Nora Haddad,Individual,Student,700.0
+CUS-10130,2023-05-11,IE,PL,Low,,Grace Nasser,Individual,Engineer,6500.0
+CUS-10131,2022-09-25,IE,PT,Low,,Hannah Novak,Individual,Retail assistant,2200.0
+CUS-10132,2021-12-06,IE,IT,Low,,Santos Convenience Ltd,Business,Convenience store,60000.0
+CUS-10133,2020-04-26,IE,IE,Low,,Keller Engineering Ltd,Business,Engineering services,55000.0
+CUS-10134,2023-06-28,IE,PL,Low,,Schmidt Freight Ltd,Business,Freight forwarding,55000.0
+CUS-10135,2021-08-26,IE,BE,Low,,Ivanova Online Ltd,Business,Online retail (e-commerce),20000.0
+CUS-10136,2020-02-05,IE,ES,Low,,OBrien Online Ltd,Business,Online retail (e-commerce),20000.0
+CUS-10137,2025-05-02,IE,FR,Low,,Okafor Online Ltd,Business,Online retail (e-commerce),20000.0
+CUS-10138,2020-08-25,IE,IE,Low,,Mia Keller,Individual,Engineer,6500.0
+CUS-10139,2025-11-27,IE,NL,Low,,Fischer Freight Ltd,Business,Freight forwarding,45000.0
+CUS-10140,2024-05-30,IE,IT,Low,,Schmidt Metals Ltd,Business,Metals trading,70000.0
+CUS-10141,2021-12-16,IE,ES,Low,,Fatima OBrien,Individual,Retired,2800.0
+CUS-10142,2024-08-31,IE,IE,Low,,OBrien Industrial Ltd,Business,Industrial equipment import,70000.0
+CUS-10143,2024-06-11,IE,PL,Low,,Kofi Kowalski,Individual,Civil servant,2800.0
+CUS-10144,2025-03-29,IE,PT,Low,,Byrne Restaurant Ltd,Business,Restaurant,35000.0
+CUS-10145,2025-11-16,IE,PT,Low,,Amara Tanaka,Individual,Retired,2800.0
+CUS-10146,2024-03-15,IE,FR,Low,,Zara Santos,Individual,Unemployed,600.0
+CUS-10147,2021-04-26,IE,IT,Low,,Novak Convenience Ltd,Business,Convenience store,60000.0
+CUS-10148,2022-06-18,IE,PL,Low,,Schmidt Takeaway Ltd,Business,Takeaway food,60000.0
+CUS-10149,2022-03-02,IE,NL,Low,,Nowak Consulting Ltd,Business,Consulting services,15000.0
+CUS-10150,2021-12-27,IE,IE,Low,,Costa Metals Ltd,Business,Metals trading,70000.0
+CUS-10151,2024-02-05,IE,IT,Low,,Dubois Convenience Ltd,Business,Convenience store,35000.0
+CUS-10152,2026-07-21,IE,IE,Medium,,Silva Restaurant Ltd,Business,Restaurant,55000.0
+CUS-10153,2020-09-27,IE,FR,Low,,Chloe Doyle,Individual,Civil servant,2800.0
+CUS-10154,2021-03-02,IE,DE,Low,,Lopez Freight Ltd,Business,Freight forwarding,45000.0
+CUS-10155,2023-09-19,IE,IT,Low,,Daniel Mensah,Individual,Student,900.0
+CUS-10156,2020-11-12,IE,ES,Low,,Sharma Consulting Ltd,Business,Consulting services,15000.0
+CUS-10157,2024-01-03,IE,ES,Low,,Arjun Lindqvist,Individual,Solicitor,5200.0
+CUS-10158,2023-06-25,IE,PL,Low,,Sharma Convenience Ltd,Business,Convenience store,45000.0
+CUS-10159,2022-03-11,IE,IE,Low,,Clara Novak,Individual,Freelance photographer,1800.0
+CUS-10160,2023-01-28,IE,DE,Low,,Amara Keller,Individual,Shipping broker,6000.0
+CUS-10161,2023-05-03,IE,AT,Low,,Murphy Metals Ltd,Business,Metals trading,70000.0
+CUS-10162,2025-12-02,IE,PL,Low,,Haddad Restaurant Ltd,Business,Restaurant,35000.0
+CUS-10163,2019-11-16,IE,IT,Low,,Mensah Freight Ltd,Business,Freight forwarding,45000.0
+CUS-10164,2020-02-24,IE,NL,Low,,Tanaka Online Ltd,Business,Online retail (e-commerce),30000.0
+CUS-10165,2022-07-19,IE,PT,Low,,Nowak Online Ltd,Business,Online retail (e-commerce),40000.0
+CUS-10166,2022-08-11,IE,ES,Low,,Brennan Auto Ltd,Business,Auto parts import,55000.0
+CUS-10167,2023-02-23,IE,IT,Low,,Daniel Sharma,Individual,Retired,4100.0
+CUS-10168,2024-05-08,IE,AT,Low,,Grace Mensah,Individual,Student,700.0
+CUS-10169,2021-05-06,IE,IT,Low,,Felix Nowak,Individual,Retired,4100.0
+CUS-10170,2024-03-10,IE,FR,Low,,Okafor Freight Ltd,Business,Freight forwarding,45000.0
+CUS-10171,2020-05-13,IE,FR,Low,,Costa Freight Ltd,Business,Freight forwarding,55000.0
+CUS-10172,2021-11-20,IE,PT,Low,,Zara Sato,Individual,Barista,2200.0
+CUS-10173,2025-07-06,IE,PL,Low,,Marco Kumar,Individual,Teacher,4100.0
+CUS-10174,2020-03-11,IE,ES,Low,,Fischer Industrial Ltd,Business,Industrial equipment import,70000.0
+CUS-10175,2023-09-02,IE,PT,Low,,Kowalski Freight Ltd,Business,Freight forwarding,55000.0
+CUS-10176,2021-06-07,IE,DE,Low,,Mei Rossi,Individual,Nurse,3500.0
+CUS-10177,2023-03-23,IE,PT,Low,,Samir Haddad,Individual,Retail assistant,2200.0
+CUS-10178,2023-10-26,IE,IT,Low,,Rafael Meyer,Individual,Unemployed,800.0
+CUS-10179,2024-09-22,IE,IT,Low,,Chloe Walsh,Individual,Teacher,4100.0
+CUS-10180,2020-04-11,IE,IE,Low,,Kofi Walsh,Individual,Unemployed,1400.0
+CUS-10181,2020-01-29,IE,NL,Low,,Ivanova Auto Ltd,Business,Auto parts import,55000.0
+CUS-10182,2023-04-27,IE,PT,Low,,Chen Schmidt,Individual,Student,900.0
+CUS-10183,2020-05-03,IE,DE,Low,,Chloe Horvat,Individual,Software engineer,5000.0
+CUS-10184,2021-09-26,IE,FR,Low,,Nowak Freight Ltd,Business,Freight forwarding,45000.0
+CUS-10185,2025-07-30,IE,PT,Low,,Keller Online Ltd,Business,Online retail (e-commerce),20000.0
+CUS-10186,2025-03-05,IE,AT,Low,,Tomas Keller,Individual,Part-time retail,600.0
+CUS-10187,2023-06-27,IE,ES,Low,,Meyer Freight Ltd,Business,Freight forwarding,45000.0
+CUS-10188,2021-05-04,IE,DE,Low,,Mei Moreau,Individual,Graphic designer,1800.0
+CUS-10189,2022-11-23,IE,ES,Low,,Priya Ivanova,Individual,Consultant,5200.0
+CUS-10190,2025-12-25,IE,NL,Low,,Kowalski Online Ltd,Business,Online retail (e-commerce),40000.0
+CUS-10191,2026-02-13,IE,FR,Low,,Pavel Dubois,Individual,Teacher,4100.0
+CUS-10192,2025-12-28,IE,FR,Low,,Elena Murphy,Individual,Graphic designer,2300.0
+CUS-10193,2022-11-02,IE,PL,Low,,Priya Sato,Individual,Warehouse operative,1900.0
+CUS-10194,2025-06-03,IE,NL,Low,,Pavel Schmidt,Individual,Consultant,8000.0
+CUS-10195,2024-07-12,IE,IT,Low,,Arjun Byrne,Individual,Student,800.0
+CUS-10196,2023-04-08,IE,IE,Low,,Costa Metals Ltd,Business,Metals trading,70000.0
+CUS-10197,2019-10-29,IE,DE,Low,,Meyer Engineering Ltd,Business,Engineering services,55000.0
+CUS-10198,2021-04-08,IE,FR,Low,,Nora Dubois,Individual,Nurse,4200.0
+CUS-10199,2020-05-19,IE,FR,Low,,Ibrahim Brennan,Individual,Sales manager,4200.0
+CUS-10200,2021-08-20,IE,IE,Low,,Fatima Sato,Individual,Freelance photographer,1800.0
+CUS-10201,2025-06-16,IE,AT,Low,,Yuki Keller,Individual,Unemployed,900.0
+CUS-10202,2023-07-15,IE,ES,Low,,Doyle Freight Ltd,Business,Freight forwarding,55000.0
+CUS-10203,2023-09-05,IE,PT,Low,,Kofi Brennan,Individual,Graphic designer,1800.0
+CUS-10204,2020-02-15,IE,PT,Low,,Zara Meyer,Individual,Warehouse operative,2200.0
+CUS-10205,2024-11-22,IE,NL,Low,,Okafor Online Ltd,Business,Online retail (e-commerce),30000.0
+CUS-10206,2024-02-09,IE,PL,Low,,Hannah Meyer,Individual,Sales manager,3500.0
+CUS-10207,2025-01-24,IE,FR,Low,,Aoife Keller,Individual,Civil servant,4100.0
+CUS-10208,2021-02-02,IE,IE,Low,,Lukas Brennan,Individual,Solicitor,6500.0
+CUS-10209,2020-06-13,IE,PL,Low,,Byrne Online Ltd,Business,Online retail (e-commerce),20000.0
+CUS-10210,2020-12-14,IE,NL,Low,,Lukas Schmidt,Individual,Delivery driver,1400.0
+CUS-10211,2020-09-12,IE,NL,Low,,Tanaka Metals Ltd,Business,Metals trading,70000.0
+CUS-10212,2022-04-29,IE,PT,Low,,Sofia Horvat,Individual,Unemployed,1800.0
+CUS-10213,2022-08-07,IE,DE,Low,,Clara Doyle,Individual,Part-time retail,800.0
+CUS-10214,2023-04-10,IE,NL,Low,,Kenji Sato,Individual,Student,900.0
+CUS-10215,2024-02-29,IE,PT,Low,,Noah OBrien,Individual,Student,900.0
+CUS-10216,2023-01-11,IE,NL,Low,,Garcia Online Ltd,Business,Online retail (e-commerce),20000.0
+CUS-10217,2021-01-23,IE,ES,Low,,Chen OBrien,Individual,Student,800.0
+CUS-10218,2023-06-16,IE,ES,Low,,Garcia Consulting Ltd,Business,Consulting services,15000.0
+CUS-10219,2020-01-04,IE,PL,Low,,Lena Lopez,Individual,Sales manager,5000.0
+CUS-10220,2023-08-09,IE,NL,Low,,Ciara Okafor,Individual,Personal trainer,1800.0
+CUS-10221,2019-12-03,IE,DE,Low,,Yuki Dubois,Individual,Unemployed,800.0
+CUS-10222,2021-01-27,IE,AT,Low,,Jonas Okafor,Individual,Shipping broker,6000.0
+CUS-10223,2025-05-17,IE,FR,Low,,Sharma Online Ltd,Business,Online retail (e-commerce),20000.0
+CUS-10224,2023-11-21,IE,ES,Low,,Chloe Kowalski,Individual,Sales manager,5000.0
+CUS-10225,2022-06-28,IE,IE,Low,,Amara Kowalski,Individual,Warehouse operative,3000.0
+CUS-10226,2025-04-23,IE,PT,Low,,Jansen Restaurant Ltd,Business,Restaurant,35000.0
+CUS-10227,2024-03-09,IE,BE,Low,,Silva Auto Ltd,Business,Auto parts import,55000.0
+CUS-10228,2023-08-08,IE,PT,Low,,Olga Okafor,Individual,Solicitor,8000.0
+CUS-10229,2022-10-10,IE,PT,Low,,Amara Kowalski,Individual,Student,900.0
+CUS-10230,2023-09-29,IE,PL,Low,,Fatima Novak,Individual,Student,1100.0
+CUS-10231,2020-02-20,IE,AT,Low,,Rafael Sharma,Individual,Civil servant,4100.0
+CUS-10232,2025-10-06,IE,FR,Low,,Mateo Lopez,Individual,Unemployed,900.0
+CUS-10233,2024-04-12,IE,IE,Low,,Felix Novak,Individual,Student,1800.0
+CUS-10234,2022-01-26,IE,IT,Low,,Costa Auto Ltd,Business,Auto parts import,55000.0
+CUS-10235,2022-06-30,IE,FR,Low,,Emil Nowak,Individual,Shipping broker,6000.0
+CUS-10236,2023-10-28,IE,IT,Low,,Chloe OBrien,Individual,Unemployed,1100.0
+CUS-10237,2025-01-26,IE,AT,Low,,Lukas Tanaka,Individual,Civil servant,3400.0
+CUS-10238,2020-12-27,IE,IE,Low,,Kofi Horvat,Individual,Engineer,6500.0
+CUS-10239,2023-12-10,IE,ES,Low,,Walsh Online Ltd,Business,Online retail (e-commerce),40000.0
+CUS-10240,2024-12-23,IE,BE,Low,,Tomas Mensah,Individual,Student,900.0
+CUS-10241,2021-12-04,IE,FR,Low,,Arjun Haddad,Individual,Barista,1900.0
+CUS-10242,2020-03-15,IE,IT,Low,,Lukas Schmidt,Individual,Solicitor,8000.0
+CUS-10243,2021-09-10,IE,IT,Low,,Moreau Online Ltd,Business,Online retail (e-commerce),30000.0
+CUS-10244,2025-05-12,IE,AT,Low,,Jonas Okafor,Individual,Student,1100.0
+CUS-10245,2022-09-14,IE,FR,Low,,Weber Takeaway Ltd,Business,Takeaway food,45000.0
+CUS-10246,2022-08-19,IE,IE,Low,,Novak Online Ltd,Business,Online retail (e-commerce),20000.0
+CUS-10247,2020-06-23,IE,BE,Low,,Hannah Weber,Individual,Personal trainer,2300.0
+CUS-10248,2021-11-27,IE,NL,Low,,Rafael Byrne,Individual,Engineer,5200.0

@@ -1,0 +1,16 @@
+list_id,name,party_type,country,programme
+SL-001,Volkov Maritime Trading LLC,entity,RU,SYNTH-RUS
+SL-002,Kasparian Petrochem Holdings,entity,IR,SYNTH-IRN
+SL-003,Grenhold Shipping Company,entity,KP,SYNTH-DPRK
+SL-004,Talvar Defence Supplies Ltd,entity,IR,SYNTH-IRN
+SL-005,Boris Anatolyevich Kren,individual,RU,SYNTH-RUS
+SL-006,Northwind Metals Export JSC,entity,BY,SYNTH-BLR
+SL-007,Zafar Global Logistics FZE,entity,SY,SYNTH-SYR
+SL-008,Irina Mstislavovna Dolgova,individual,RU,SYNTH-RUS
+SL-009,Crimson Delta Mining Corp,entity,MM,SYNTH-MMR
+SL-010,Petrov Logistics LLC,entity,RU,SYNTH-RUS
+SL-011,Orinoco Gold Resources CA,entity,VE,SYNTH-VEN
+SL-012,Haedong Precision Machinery,entity,KP,SYNTH-DPRK
+SL-013,Arash Kiani Mehrabad,individual,IR,SYNTH-IRN
+SL-014,Steppe Energy Finance Group,entity,RU,SYNTH-RUS
+SL-015,Minsk Optic Components OAO,entity,BY,SYNTH-BLR

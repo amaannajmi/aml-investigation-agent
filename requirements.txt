@@ -1,0 +1,6 @@
+pandas>=2.0
+numpy>=1.24
+rapidfuzz>=3.0
+anthropic>=0.40
+streamlit>=1.40
+pytest>=8.0

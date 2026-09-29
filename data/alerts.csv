@@ -1,0 +1,249 @@
+alert_id,customer_id,alert_date,rule_id,rule_name,rule_description,lookback_days
+ALR-0001,CUS-10001,2026-09-01,TM-FAN-03,High number of unique inbound counterparties,Unusual number of distinct payers relative to customer profile,30
+ALR-0002,CUS-10002,2026-09-01,TM-CASH-01,Cash deposits near reporting threshold,"Multiple cash deposits within 30 days, aggregate exceeds expected activity",30
+ALR-0003,CUS-10003,2026-09-01,TM-RMF-02,Rapid movement of funds,Large credits followed by outgoing transfers of similar value,30
+ALR-0004,CUS-10004,2026-09-01,TM-CASH-01,Cash deposits near reporting threshold,"Multiple cash deposits within 30 days, aggregate exceeds expected activity",30
+ALR-0005,CUS-10005,2026-09-01,SCR-PAY-05,Payment screening potential match,Counterparty name matched against sanctions list,30
+ALR-0006,CUS-10006,2026-09-01,TM-FAN-03,High number of unique inbound counterparties,Unusual number of distinct payers relative to customer profile,30
+ALR-0007,CUS-10007,2026-09-01,TM-RMF-02,Rapid movement of funds,Large credits followed by outgoing transfers of similar value,30
+ALR-0008,CUS-10008,2026-09-01,TM-HRJ-04,Transaction with high-risk jurisdiction,Outbound payment to a FATF call-for-action jurisdiction,30
+ALR-0009,CUS-10009,2026-09-01,TM-FAN-03,High number of unique inbound counterparties,Unusual number of distinct payers relative to customer profile,30
+ALR-0010,CUS-10010,2026-09-01,SCR-PAY-05,Payment screening potential match,Counterparty name matched against sanctions list,30
+ALR-0011,CUS-10011,2026-09-01,TM-RMF-02,Rapid movement of funds,Large credits followed by outgoing transfers of similar value,30
+ALR-0012,CUS-10012,2026-09-01,TM-HVW-07,High-value wire to new beneficiary,"First payment to a new beneficiary above EUR 20,000",30
+ALR-0013,CUS-10013,2026-09-01,TM-CASH-01,Cash deposits near reporting threshold,"Multiple cash deposits within 30 days, aggregate exceeds expected activity",30
+ALR-0014,CUS-10014,2026-09-01,TM-FAN-03,High number of unique inbound counterparties,Unusual number of distinct payers relative to customer profile,30
+ALR-0015,CUS-10015,2026-09-01,SCR-PAY-05,Payment screening potential match,Counterparty name matched against sanctions list,30
+ALR-0016,CUS-10016,2026-09-01,TM-RMF-02,Rapid movement of funds,Large credits followed by outgoing transfers of similar value,30
+ALR-0017,CUS-10017,2026-09-01,TM-HRJ-04,Transaction with high-risk jurisdiction,Outbound payment to a FATF call-for-action jurisdiction,30
+ALR-0018,CUS-10018,2026-09-01,TM-LGC-06,Large credit inconsistent with profile,Single credit significantly above expected monthly inflow,30
+ALR-0019,CUS-10019,2026-09-01,TM-FAN-03,High number of unique inbound counterparties,Unusual number of distinct payers relative to customer profile,30
+ALR-0020,CUS-10020,2026-09-01,TM-FAN-03,High number of unique inbound counterparties,Unusual number of distinct payers relative to customer profile,30
+ALR-0021,CUS-10021,2026-09-01,TM-HRJ-04,Transaction with high-risk jurisdiction,Outbound payment to a FATF call-for-action jurisdiction,30
+ALR-0022,CUS-10022,2026-09-01,SCR-PAY-05,Payment screening potential match,Counterparty name matched against sanctions list,30
+ALR-0023,CUS-10023,2026-09-01,TM-HVW-07,High-value wire to new beneficiary,"First payment to a new beneficiary above EUR 20,000",30
+ALR-0024,CUS-10024,2026-09-01,TM-RMF-02,Rapid movement of funds,Large credits followed by outgoing transfers of similar value,30
+ALR-0025,CUS-10025,2026-09-01,TM-RMF-02,Rapid movement of funds,Large credits followed by outgoing transfers of similar value,30
+ALR-0026,CUS-10026,2026-09-01,TM-FAN-03,High number of unique inbound counterparties,Unusual number of distinct payers relative to customer profile,30
+ALR-0027,CUS-10027,2026-09-01,SCR-PAY-05,Payment screening potential match,Counterparty name matched against sanctions list,30
+ALR-0028,CUS-10028,2026-09-01,TM-CASH-01,Cash deposits near reporting threshold,"Multiple cash deposits within 30 days, aggregate exceeds expected activity",30
+ALR-0029,CUS-10029,2026-09-01,TM-RMF-02,Rapid movement of funds,Large credits followed by outgoing transfers of similar value,30
+ALR-0030,CUS-10030,2026-09-01,TM-HVW-07,High-value wire to new beneficiary,"First payment to a new beneficiary above EUR 20,000",30
+ALR-0031,CUS-10031,2026-09-01,TM-CASH-01,Cash deposits near reporting threshold,"Multiple cash deposits within 30 days, aggregate exceeds expected activity",30
+ALR-0032,CUS-10032,2026-09-01,SCR-PAY-05,Payment screening potential match,Counterparty name matched against sanctions list,30
+ALR-0033,CUS-10033,2026-09-01,TM-FAN-03,High number of unique inbound counterparties,Unusual number of distinct payers relative to customer profile,30
+ALR-0034,CUS-10034,2026-09-01,TM-HVW-07,High-value wire to new beneficiary,"First payment to a new beneficiary above EUR 20,000",30
+ALR-0035,CUS-10035,2026-09-01,TM-CASH-01,Cash deposits near reporting threshold,"Multiple cash deposits within 30 days, aggregate exceeds expected activity",30
+ALR-0036,CUS-10036,2026-09-01,TM-CASH-01,Cash deposits near reporting threshold,"Multiple cash deposits within 30 days, aggregate exceeds expected activity",30
+ALR-0037,CUS-10037,2026-09-01,SCR-PAY-05,Payment screening potential match,Counterparty name matched against sanctions list,30
+ALR-0038,CUS-10038,2026-09-01,TM-FAN-03,High number of unique inbound counterparties,Unusual number of distinct payers relative to customer profile,30
+ALR-0039,CUS-10039,2026-09-01,TM-LGC-06,Large credit inconsistent with profile,Single credit significantly above expected monthly inflow,30
+ALR-0040,CUS-10040,2026-09-01,TM-LGC-06,Large credit inconsistent with profile,Single credit significantly above expected monthly inflow,30
+ALR-0041,CUS-10041,2026-09-01,TM-FAN-03,High number of unique inbound counterparties,Unusual number of distinct payers relative to customer profile,30
+ALR-0042,CUS-10042,2026-09-01,SCR-PAY-05,Payment screening potential match,Counterparty name matched against sanctions list,30
+ALR-0043,CUS-10043,2026-09-01,TM-CASH-01,Cash deposits near reporting threshold,"Multiple cash deposits within 30 days, aggregate exceeds expected activity",30
+ALR-0044,CUS-10044,2026-09-01,TM-CASH-01,Cash deposits near reporting threshold,"Multiple cash deposits within 30 days, aggregate exceeds expected activity",30
+ALR-0045,CUS-10045,2026-09-01,TM-FAN-03,High number of unique inbound counterparties,Unusual number of distinct payers relative to customer profile,30
+ALR-0046,CUS-10046,2026-09-01,TM-FAN-03,High number of unique inbound counterparties,Unusual number of distinct payers relative to customer profile,30
+ALR-0047,CUS-10047,2026-09-01,TM-CASH-01,Cash deposits near reporting threshold,"Multiple cash deposits within 30 days, aggregate exceeds expected activity",30
+ALR-0048,CUS-10048,2026-09-01,SCR-PAY-05,Payment screening potential match,Counterparty name matched against sanctions list,30
+ALR-0049,CUS-10049,2026-09-01,TM-RMF-02,Rapid movement of funds,Large credits followed by outgoing transfers of similar value,30
+ALR-0050,CUS-10050,2026-09-01,TM-LGC-06,Large credit inconsistent with profile,Single credit significantly above expected monthly inflow,30
+ALR-0051,CUS-10051,2026-09-01,SCR-PAY-05,Payment screening potential match,Counterparty name matched against sanctions list,30
+ALR-0052,CUS-10052,2026-09-01,TM-LGC-06,Large credit inconsistent with profile,Single credit significantly above expected monthly inflow,30
+ALR-0053,CUS-10053,2026-09-01,SCR-PAY-05,Payment screening potential match,Counterparty name matched against sanctions list,30
+ALR-0054,CUS-10054,2026-09-01,TM-FAN-03,High number of unique inbound counterparties,Unusual number of distinct payers relative to customer profile,30
+ALR-0055,CUS-10055,2026-09-01,TM-CASH-01,Cash deposits near reporting threshold,"Multiple cash deposits within 30 days, aggregate exceeds expected activity",30
+ALR-0056,CUS-10056,2026-09-01,TM-FAN-03,High number of unique inbound counterparties,Unusual number of distinct payers relative to customer profile,30
+ALR-0057,CUS-10057,2026-09-01,TM-FAN-03,High number of unique inbound counterparties,Unusual number of distinct payers relative to customer profile,30
+ALR-0058,CUS-10058,2026-09-01,TM-FAN-03,High number of unique inbound counterparties,Unusual number of distinct payers relative to customer profile,30
+ALR-0059,CUS-10059,2026-09-01,SCR-PAY-05,Payment screening potential match,Counterparty name matched against sanctions list,30
+ALR-0060,CUS-10060,2026-09-01,TM-CASH-01,Cash deposits near reporting threshold,"Multiple cash deposits within 30 days, aggregate exceeds expected activity",30
+ALR-0061,CUS-10061,2026-09-01,TM-RMF-02,Rapid movement of funds,Large credits followed by outgoing transfers of similar value,30
+ALR-0062,CUS-10062,2026-09-01,TM-RMF-02,Rapid movement of funds,Large credits followed by outgoing transfers of similar value,30
+ALR-0063,CUS-10063,2026-09-01,TM-FAN-03,High number of unique inbound counterparties,Unusual number of distinct payers relative to customer profile,30
+ALR-0064,CUS-10064,2026-09-01,TM-CASH-01,Cash deposits near reporting threshold,"Multiple cash deposits within 30 days, aggregate exceeds expected activity",30
+ALR-0065,CUS-10065,2026-09-01,TM-RMF-02,Rapid movement of funds,Large credits followed by outgoing transfers of similar value,30
+ALR-0066,CUS-10066,2026-09-01,TM-FAN-03,High number of unique inbound counterparties,Unusual number of distinct payers relative to customer profile,30
+ALR-0067,CUS-10067,2026-09-01,TM-CASH-01,Cash deposits near reporting threshold,"Multiple cash deposits within 30 days, aggregate exceeds expected activity",30
+ALR-0068,CUS-10068,2026-09-01,TM-RMF-02,Rapid movement of funds,Large credits followed by outgoing transfers of similar value,30
+ALR-0069,CUS-10069,2026-09-01,TM-RMF-02,Rapid movement of funds,Large credits followed by outgoing transfers of similar value,30
+ALR-0070,CUS-10070,2026-09-01,TM-RMF-02,Rapid movement of funds,Large credits followed by outgoing transfers of similar value,30
+ALR-0071,CUS-10071,2026-09-01,TM-CASH-01,Cash deposits near reporting threshold,"Multiple cash deposits within 30 days, aggregate exceeds expected activity",30
+ALR-0072,CUS-10072,2026-09-01,TM-RMF-02,Rapid movement of funds,Large credits followed by outgoing transfers of similar value,30
+ALR-0073,CUS-10073,2026-09-01,TM-CASH-01,Cash deposits near reporting threshold,"Multiple cash deposits within 30 days, aggregate exceeds expected activity",30
+ALR-0074,CUS-10074,2026-09-01,TM-CASH-01,Cash deposits near reporting threshold,"Multiple cash deposits within 30 days, aggregate exceeds expected activity",30
+ALR-0075,CUS-10075,2026-09-01,TM-CASH-01,Cash deposits near reporting threshold,"Multiple cash deposits within 30 days, aggregate exceeds expected activity",30
+ALR-0076,CUS-10076,2026-09-01,TM-HRJ-04,Transaction with high-risk jurisdiction,Outbound payment to a FATF call-for-action jurisdiction,30
+ALR-0077,CUS-10077,2026-09-01,SCR-PAY-05,Payment screening potential match,Counterparty name matched against sanctions list,30
+ALR-0078,CUS-10078,2026-09-01,TM-CASH-01,Cash deposits near reporting threshold,"Multiple cash deposits within 30 days, aggregate exceeds expected activity",30
+ALR-0079,CUS-10079,2026-09-01,TM-CASH-01,Cash deposits near reporting threshold,"Multiple cash deposits within 30 days, aggregate exceeds expected activity",30
+ALR-0080,CUS-10080,2026-09-01,TM-CASH-01,Cash deposits near reporting threshold,"Multiple cash deposits within 30 days, aggregate exceeds expected activity",30
+ALR-0081,CUS-10081,2026-09-01,SCR-PAY-05,Payment screening potential match,Counterparty name matched against sanctions list,30
+ALR-0082,CUS-10082,2026-09-01,TM-LGC-06,Large credit inconsistent with profile,Single credit significantly above expected monthly inflow,30
+ALR-0083,CUS-10083,2026-09-01,SCR-PAY-05,Payment screening potential match,Counterparty name matched against sanctions list,30
+ALR-0084,CUS-10084,2026-09-01,TM-RMF-02,Rapid movement of funds,Large credits followed by outgoing transfers of similar value,30
+ALR-0085,CUS-10085,2026-09-01,TM-LGC-06,Large credit inconsistent with profile,Single credit significantly above expected monthly inflow,30
+ALR-0086,CUS-10086,2026-09-01,TM-CASH-01,Cash deposits near reporting threshold,"Multiple cash deposits within 30 days, aggregate exceeds expected activity",30
+ALR-0087,CUS-10087,2026-09-01,TM-RMF-02,Rapid movement of funds,Large credits followed by outgoing transfers of similar value,30
+ALR-0088,CUS-10088,2026-09-01,TM-CASH-01,Cash deposits near reporting threshold,"Multiple cash deposits within 30 days, aggregate exceeds expected activity",30
+ALR-0089,CUS-10089,2026-09-01,TM-RMF-02,Rapid movement of funds,Large credits followed by outgoing transfers of similar value,30
+ALR-0090,CUS-10090,2026-09-01,TM-FAN-03,High number of unique inbound counterparties,Unusual number of distinct payers relative to customer profile,30
+ALR-0091,CUS-10091,2026-09-01,TM-HRJ-04,Transaction with high-risk jurisdiction,Outbound payment to a FATF call-for-action jurisdiction,30
+ALR-0092,CUS-10092,2026-09-01,TM-LGC-06,Large credit inconsistent with profile,Single credit significantly above expected monthly inflow,30
+ALR-0093,CUS-10093,2026-09-01,TM-CASH-01,Cash deposits near reporting threshold,"Multiple cash deposits within 30 days, aggregate exceeds expected activity",30
+ALR-0094,CUS-10094,2026-09-01,TM-FAN-03,High number of unique inbound counterparties,Unusual number of distinct payers relative to customer profile,30
+ALR-0095,CUS-10095,2026-09-01,SCR-PAY-05,Payment screening potential match,Counterparty name matched against sanctions list,30
+ALR-0096,CUS-10096,2026-09-01,TM-LGC-06,Large credit inconsistent with profile,Single credit significantly above expected monthly inflow,30
+ALR-0097,CUS-10097,2026-09-01,TM-CASH-01,Cash deposits near reporting threshold,"Multiple cash deposits within 30 days, aggregate exceeds expected activity",30
+ALR-0098,CUS-10098,2026-09-01,TM-CASH-01,Cash deposits near reporting threshold,"Multiple cash deposits within 30 days, aggregate exceeds expected activity",30
+ALR-0099,CUS-10099,2026-09-01,TM-HRJ-04,Transaction with high-risk jurisdiction,Outbound payment to a FATF call-for-action jurisdiction,30
+ALR-0100,CUS-10100,2026-09-01,TM-HRJ-04,Transaction with high-risk jurisdiction,Outbound payment to a FATF call-for-action jurisdiction,30
+ALR-0101,CUS-10101,2026-09-01,SCR-PAY-05,Payment screening potential match,Counterparty name matched against sanctions list,30
+ALR-0102,CUS-10102,2026-09-01,TM-HRJ-04,Transaction with high-risk jurisdiction,Outbound payment to a FATF call-for-action jurisdiction,30
+ALR-0103,CUS-10103,2026-09-01,SCR-PAY-05,Payment screening potential match,Counterparty name matched against sanctions list,30
+ALR-0104,CUS-10104,2026-09-01,TM-CASH-01,Cash deposits near reporting threshold,"Multiple cash deposits within 30 days, aggregate exceeds expected activity",30
+ALR-0105,CUS-10105,2026-09-01,TM-RMF-02,Rapid movement of funds,Large credits followed by outgoing transfers of similar value,30
+ALR-0106,CUS-10106,2026-09-01,TM-FAN-03,High number of unique inbound counterparties,Unusual number of distinct payers relative to customer profile,30
+ALR-0107,CUS-10107,2026-09-01,TM-CASH-01,Cash deposits near reporting threshold,"Multiple cash deposits within 30 days, aggregate exceeds expected activity",30
+ALR-0108,CUS-10108,2026-09-01,TM-LGC-06,Large credit inconsistent with profile,Single credit significantly above expected monthly inflow,30
+ALR-0109,CUS-10109,2026-09-01,TM-CASH-01,Cash deposits near reporting threshold,"Multiple cash deposits within 30 days, aggregate exceeds expected activity",30
+ALR-0110,CUS-10110,2026-09-01,TM-CASH-01,Cash deposits near reporting threshold,"Multiple cash deposits within 30 days, aggregate exceeds expected activity",30
+ALR-0111,CUS-10111,2026-09-01,SCR-PAY-05,Payment screening potential match,Counterparty name matched against sanctions list,30
+ALR-0112,CUS-10112,2026-09-01,TM-RMF-02,Rapid movement of funds,Large credits followed by outgoing transfers of similar value,30
+ALR-0113,CUS-10113,2026-09-01,TM-CASH-01,Cash deposits near reporting threshold,"Multiple cash deposits within 30 days, aggregate exceeds expected activity",30
+ALR-0114,CUS-10114,2026-09-01,TM-FAN-03,High number of unique inbound counterparties,Unusual number of distinct payers relative to customer profile,30
+ALR-0115,CUS-10115,2026-09-01,SCR-PAY-05,Payment screening potential match,Counterparty name matched against sanctions list,30
+ALR-0116,CUS-10116,2026-09-01,TM-CASH-01,Cash deposits near reporting threshold,"Multiple cash deposits within 30 days, aggregate exceeds expected activity",30
+ALR-0117,CUS-10117,2026-09-01,TM-LGC-06,Large credit inconsistent with profile,Single credit significantly above expected monthly inflow,30
+ALR-0118,CUS-10118,2026-09-01,TM-HRJ-04,Transaction with high-risk jurisdiction,Outbound payment to a FATF call-for-action jurisdiction,30
+ALR-0119,CUS-10119,2026-09-01,TM-HVW-07,High-value wire to new beneficiary,"First payment to a new beneficiary above EUR 20,000",30
+ALR-0120,CUS-10120,2026-09-01,TM-CASH-01,Cash deposits near reporting threshold,"Multiple cash deposits within 30 days, aggregate exceeds expected activity",30
+ALR-0121,CUS-10121,2026-09-01,TM-LGC-06,Large credit inconsistent with profile,Single credit significantly above expected monthly inflow,30
+ALR-0122,CUS-10122,2026-09-01,TM-FAN-03,High number of unique inbound counterparties,Unusual number of distinct payers relative to customer profile,30
+ALR-0123,CUS-10123,2026-09-01,TM-RMF-02,Rapid movement of funds,Large credits followed by outgoing transfers of similar value,30
+ALR-0124,CUS-10124,2026-09-01,SCR-PAY-05,Payment screening potential match,Counterparty name matched against sanctions list,30
+ALR-0125,CUS-10125,2026-09-01,TM-CASH-01,Cash deposits near reporting threshold,"Multiple cash deposits within 30 days, aggregate exceeds expected activity",30
+ALR-0126,CUS-10126,2026-09-01,TM-FAN-03,High number of unique inbound counterparties,Unusual number of distinct payers relative to customer profile,30
+ALR-0127,CUS-10127,2026-09-01,TM-CASH-01,Cash deposits near reporting threshold,"Multiple cash deposits within 30 days, aggregate exceeds expected activity",30
+ALR-0128,CUS-10128,2026-09-01,TM-FAN-03,High number of unique inbound counterparties,Unusual number of distinct payers relative to customer profile,30
+ALR-0129,CUS-10129,2026-09-01,TM-FAN-03,High number of unique inbound counterparties,Unusual number of distinct payers relative to customer profile,30
+ALR-0130,CUS-10130,2026-09-01,TM-RMF-02,Rapid movement of funds,Large credits followed by outgoing transfers of similar value,30
+ALR-0131,CUS-10131,2026-09-01,TM-CASH-01,Cash deposits near reporting threshold,"Multiple cash deposits within 30 days, aggregate exceeds expected activity",30
+ALR-0132,CUS-10132,2026-09-01,TM-CASH-01,Cash deposits near reporting threshold,"Multiple cash deposits within 30 days, aggregate exceeds expected activity",30
+ALR-0133,CUS-10133,2026-09-01,SCR-PAY-05,Payment screening potential match,Counterparty name matched against sanctions list,30
+ALR-0134,CUS-10134,2026-09-01,SCR-PAY-05,Payment screening potential match,Counterparty name matched against sanctions list,30
+ALR-0135,CUS-10135,2026-09-01,TM-FAN-03,High number of unique inbound counterparties,Unusual number of distinct payers relative to customer profile,30
+ALR-0136,CUS-10136,2026-09-01,TM-FAN-03,High number of unique inbound counterparties,Unusual number of distinct payers relative to customer profile,30
+ALR-0137,CUS-10137,2026-09-01,TM-FAN-03,High number of unique inbound counterparties,Unusual number of distinct payers relative to customer profile,30
+ALR-0138,CUS-10138,2026-09-01,TM-RMF-02,Rapid movement of funds,Large credits followed by outgoing transfers of similar value,30
+ALR-0139,CUS-10139,2026-09-01,SCR-PAY-05,Payment screening potential match,Counterparty name matched against sanctions list,30
+ALR-0140,CUS-10140,2026-09-01,TM-HVW-07,High-value wire to new beneficiary,"First payment to a new beneficiary above EUR 20,000",30
+ALR-0141,CUS-10141,2026-09-01,TM-LGC-06,Large credit inconsistent with profile,Single credit significantly above expected monthly inflow,30
+ALR-0142,CUS-10142,2026-09-01,TM-HVW-07,High-value wire to new beneficiary,"First payment to a new beneficiary above EUR 20,000",30
+ALR-0143,CUS-10143,2026-09-01,TM-LGC-06,Large credit inconsistent with profile,Single credit significantly above expected monthly inflow,30
+ALR-0144,CUS-10144,2026-09-01,TM-CASH-01,Cash deposits near reporting threshold,"Multiple cash deposits within 30 days, aggregate exceeds expected activity",30
+ALR-0145,CUS-10145,2026-09-01,TM-LGC-06,Large credit inconsistent with profile,Single credit significantly above expected monthly inflow,30
+ALR-0146,CUS-10146,2026-09-01,TM-FAN-03,High number of unique inbound counterparties,Unusual number of distinct payers relative to customer profile,30
+ALR-0147,CUS-10147,2026-09-01,TM-CASH-01,Cash deposits near reporting threshold,"Multiple cash deposits within 30 days, aggregate exceeds expected activity",30
+ALR-0148,CUS-10148,2026-09-01,TM-CASH-01,Cash deposits near reporting threshold,"Multiple cash deposits within 30 days, aggregate exceeds expected activity",30
+ALR-0149,CUS-10149,2026-09-01,TM-RMF-02,Rapid movement of funds,Large credits followed by outgoing transfers of similar value,30
+ALR-0150,CUS-10150,2026-09-01,TM-HVW-07,High-value wire to new beneficiary,"First payment to a new beneficiary above EUR 20,000",30
+ALR-0151,CUS-10151,2026-09-01,TM-CASH-01,Cash deposits near reporting threshold,"Multiple cash deposits within 30 days, aggregate exceeds expected activity",30
+ALR-0152,CUS-10152,2026-09-01,TM-CASH-01,Cash deposits near reporting threshold,"Multiple cash deposits within 30 days, aggregate exceeds expected activity",30
+ALR-0153,CUS-10153,2026-09-01,TM-LGC-06,Large credit inconsistent with profile,Single credit significantly above expected monthly inflow,30
+ALR-0154,CUS-10154,2026-09-01,SCR-PAY-05,Payment screening potential match,Counterparty name matched against sanctions list,30
+ALR-0155,CUS-10155,2026-09-01,TM-FAN-03,High number of unique inbound counterparties,Unusual number of distinct payers relative to customer profile,30
+ALR-0156,CUS-10156,2026-09-01,TM-RMF-02,Rapid movement of funds,Large credits followed by outgoing transfers of similar value,30
+ALR-0157,CUS-10157,2026-09-01,TM-RMF-02,Rapid movement of funds,Large credits followed by outgoing transfers of similar value,30
+ALR-0158,CUS-10158,2026-09-01,TM-CASH-01,Cash deposits near reporting threshold,"Multiple cash deposits within 30 days, aggregate exceeds expected activity",30
+ALR-0159,CUS-10159,2026-09-01,TM-FAN-03,High number of unique inbound counterparties,Unusual number of distinct payers relative to customer profile,30
+ALR-0160,CUS-10160,2026-09-01,SCR-PAY-05,Payment screening potential match,Counterparty name matched against sanctions list,30
+ALR-0161,CUS-10161,2026-09-01,TM-HVW-07,High-value wire to new beneficiary,"First payment to a new beneficiary above EUR 20,000",30
+ALR-0162,CUS-10162,2026-09-01,TM-CASH-01,Cash deposits near reporting threshold,"Multiple cash deposits within 30 days, aggregate exceeds expected activity",30
+ALR-0163,CUS-10163,2026-09-01,SCR-PAY-05,Payment screening potential match,Counterparty name matched against sanctions list,30
+ALR-0164,CUS-10164,2026-09-01,TM-FAN-03,High number of unique inbound counterparties,Unusual number of distinct payers relative to customer profile,30
+ALR-0165,CUS-10165,2026-09-01,TM-FAN-03,High number of unique inbound counterparties,Unusual number of distinct payers relative to customer profile,30
+ALR-0166,CUS-10166,2026-09-01,SCR-PAY-05,Payment screening potential match,Counterparty name matched against sanctions list,30
+ALR-0167,CUS-10167,2026-09-01,TM-LGC-06,Large credit inconsistent with profile,Single credit significantly above expected monthly inflow,30
+ALR-0168,CUS-10168,2026-09-01,TM-FAN-03,High number of unique inbound counterparties,Unusual number of distinct payers relative to customer profile,30
+ALR-0169,CUS-10169,2026-09-01,TM-LGC-06,Large credit inconsistent with profile,Single credit significantly above expected monthly inflow,30
+ALR-0170,CUS-10170,2026-09-01,SCR-PAY-05,Payment screening potential match,Counterparty name matched against sanctions list,30
+ALR-0171,CUS-10171,2026-09-01,SCR-PAY-05,Payment screening potential match,Counterparty name matched against sanctions list,30
+ALR-0172,CUS-10172,2026-09-01,TM-CASH-01,Cash deposits near reporting threshold,"Multiple cash deposits within 30 days, aggregate exceeds expected activity",30
+ALR-0173,CUS-10173,2026-09-01,TM-LGC-06,Large credit inconsistent with profile,Single credit significantly above expected monthly inflow,30
+ALR-0174,CUS-10174,2026-09-01,TM-HVW-07,High-value wire to new beneficiary,"First payment to a new beneficiary above EUR 20,000",30
+ALR-0175,CUS-10175,2026-09-01,SCR-PAY-05,Payment screening potential match,Counterparty name matched against sanctions list,30
+ALR-0176,CUS-10176,2026-09-01,TM-HRJ-04,Transaction with high-risk jurisdiction,Outbound payment to a FATF call-for-action jurisdiction,30
+ALR-0177,CUS-10177,2026-09-01,TM-CASH-01,Cash deposits near reporting threshold,"Multiple cash deposits within 30 days, aggregate exceeds expected activity",30
+ALR-0178,CUS-10178,2026-09-01,TM-FAN-03,High number of unique inbound counterparties,Unusual number of distinct payers relative to customer profile,30
+ALR-0179,CUS-10179,2026-09-01,TM-LGC-06,Large credit inconsistent with profile,Single credit significantly above expected monthly inflow,30
+ALR-0180,CUS-10180,2026-09-01,TM-RMF-02,Rapid movement of funds,Large credits followed by outgoing transfers of similar value,30
+ALR-0181,CUS-10181,2026-09-01,SCR-PAY-05,Payment screening potential match,Counterparty name matched against sanctions list,30
+ALR-0182,CUS-10182,2026-09-01,TM-FAN-03,High number of unique inbound counterparties,Unusual number of distinct payers relative to customer profile,30
+ALR-0183,CUS-10183,2026-09-01,TM-HRJ-04,Transaction with high-risk jurisdiction,Outbound payment to a FATF call-for-action jurisdiction,30
+ALR-0184,CUS-10184,2026-09-01,SCR-PAY-05,Payment screening potential match,Counterparty name matched against sanctions list,30
+ALR-0185,CUS-10185,2026-09-01,TM-FAN-03,High number of unique inbound counterparties,Unusual number of distinct payers relative to customer profile,30
+ALR-0186,CUS-10186,2026-09-01,TM-FAN-03,High number of unique inbound counterparties,Unusual number of distinct payers relative to customer profile,30
+ALR-0187,CUS-10187,2026-09-01,SCR-PAY-05,Payment screening potential match,Counterparty name matched against sanctions list,30
+ALR-0188,CUS-10188,2026-09-01,TM-FAN-03,High number of unique inbound counterparties,Unusual number of distinct payers relative to customer profile,30
+ALR-0189,CUS-10189,2026-09-01,TM-RMF-02,Rapid movement of funds,Large credits followed by outgoing transfers of similar value,30
+ALR-0190,CUS-10190,2026-09-01,TM-FAN-03,High number of unique inbound counterparties,Unusual number of distinct payers relative to customer profile,30
+ALR-0191,CUS-10191,2026-09-01,TM-LGC-06,Large credit inconsistent with profile,Single credit significantly above expected monthly inflow,30
+ALR-0192,CUS-10192,2026-09-01,TM-FAN-03,High number of unique inbound counterparties,Unusual number of distinct payers relative to customer profile,30
+ALR-0193,CUS-10193,2026-09-01,TM-CASH-01,Cash deposits near reporting threshold,"Multiple cash deposits within 30 days, aggregate exceeds expected activity",30
+ALR-0194,CUS-10194,2026-09-01,TM-RMF-02,Rapid movement of funds,Large credits followed by outgoing transfers of similar value,30
+ALR-0195,CUS-10195,2026-09-01,TM-FAN-03,High number of unique inbound counterparties,Unusual number of distinct payers relative to customer profile,30
+ALR-0196,CUS-10196,2026-09-01,TM-HVW-07,High-value wire to new beneficiary,"First payment to a new beneficiary above EUR 20,000",30
+ALR-0197,CUS-10197,2026-09-01,SCR-PAY-05,Payment screening potential match,Counterparty name matched against sanctions list,30
+ALR-0198,CUS-10198,2026-09-01,TM-HRJ-04,Transaction with high-risk jurisdiction,Outbound payment to a FATF call-for-action jurisdiction,30
+ALR-0199,CUS-10199,2026-09-01,TM-HRJ-04,Transaction with high-risk jurisdiction,Outbound payment to a FATF call-for-action jurisdiction,30
+ALR-0200,CUS-10200,2026-09-01,TM-FAN-03,High number of unique inbound counterparties,Unusual number of distinct payers relative to customer profile,30
+ALR-0201,CUS-10201,2026-09-01,TM-RMF-02,Rapid movement of funds,Large credits followed by outgoing transfers of similar value,30
+ALR-0202,CUS-10202,2026-09-01,SCR-PAY-05,Payment screening potential match,Counterparty name matched against sanctions list,30
+ALR-0203,CUS-10203,2026-09-01,TM-FAN-03,High number of unique inbound counterparties,Unusual number of distinct payers relative to customer profile,30
+ALR-0204,CUS-10204,2026-09-01,TM-CASH-01,Cash deposits near reporting threshold,"Multiple cash deposits within 30 days, aggregate exceeds expected activity",30
+ALR-0205,CUS-10205,2026-09-01,TM-FAN-03,High number of unique inbound counterparties,Unusual number of distinct payers relative to customer profile,30
+ALR-0206,CUS-10206,2026-09-01,TM-HRJ-04,Transaction with high-risk jurisdiction,Outbound payment to a FATF call-for-action jurisdiction,30
+ALR-0207,CUS-10207,2026-09-01,TM-LGC-06,Large credit inconsistent with profile,Single credit significantly above expected monthly inflow,30
+ALR-0208,CUS-10208,2026-09-01,TM-RMF-02,Rapid movement of funds,Large credits followed by outgoing transfers of similar value,30
+ALR-0209,CUS-10209,2026-09-01,TM-FAN-03,High number of unique inbound counterparties,Unusual number of distinct payers relative to customer profile,30
+ALR-0210,CUS-10210,2026-09-01,TM-RMF-02,Rapid movement of funds,Large credits followed by outgoing transfers of similar value,30
+ALR-0211,CUS-10211,2026-09-01,TM-HVW-07,High-value wire to new beneficiary,"First payment to a new beneficiary above EUR 20,000",30
+ALR-0212,CUS-10212,2026-09-01,TM-RMF-02,Rapid movement of funds,Large credits followed by outgoing transfers of similar value,30
+ALR-0213,CUS-10213,2026-09-01,TM-FAN-03,High number of unique inbound counterparties,Unusual number of distinct payers relative to customer profile,30
+ALR-0214,CUS-10214,2026-09-01,TM-FAN-03,High number of unique inbound counterparties,Unusual number of distinct payers relative to customer profile,30
+ALR-0215,CUS-10215,2026-09-01,TM-FAN-03,High number of unique inbound counterparties,Unusual number of distinct payers relative to customer profile,30
+ALR-0216,CUS-10216,2026-09-01,TM-FAN-03,High number of unique inbound counterparties,Unusual number of distinct payers relative to customer profile,30
+ALR-0217,CUS-10217,2026-09-01,TM-FAN-03,High number of unique inbound counterparties,Unusual number of distinct payers relative to customer profile,30
+ALR-0218,CUS-10218,2026-09-01,TM-RMF-02,Rapid movement of funds,Large credits followed by outgoing transfers of similar value,30
+ALR-0219,CUS-10219,2026-09-01,TM-HRJ-04,Transaction with high-risk jurisdiction,Outbound payment to a FATF call-for-action jurisdiction,30
+ALR-0220,CUS-10220,2026-09-01,TM-FAN-03,High number of unique inbound counterparties,Unusual number of distinct payers relative to customer profile,30
+ALR-0221,CUS-10221,2026-09-01,TM-FAN-03,High number of unique inbound counterparties,Unusual number of distinct payers relative to customer profile,30
+ALR-0222,CUS-10222,2026-09-01,SCR-PAY-05,Payment screening potential match,Counterparty name matched against sanctions list,30
+ALR-0223,CUS-10223,2026-09-01,TM-FAN-03,High number of unique inbound counterparties,Unusual number of distinct payers relative to customer profile,30
+ALR-0224,CUS-10224,2026-09-01,TM-HRJ-04,Transaction with high-risk jurisdiction,Outbound payment to a FATF call-for-action jurisdiction,30
+ALR-0225,CUS-10225,2026-09-01,TM-CASH-01,Cash deposits near reporting threshold,"Multiple cash deposits within 30 days, aggregate exceeds expected activity",30
+ALR-0226,CUS-10226,2026-09-01,TM-CASH-01,Cash deposits near reporting threshold,"Multiple cash deposits within 30 days, aggregate exceeds expected activity",30
+ALR-0227,CUS-10227,2026-09-01,SCR-PAY-05,Payment screening potential match,Counterparty name matched against sanctions list,30
+ALR-0228,CUS-10228,2026-09-01,TM-RMF-02,Rapid movement of funds,Large credits followed by outgoing transfers of similar value,30
+ALR-0229,CUS-10229,2026-09-01,TM-FAN-03,High number of unique inbound counterparties,Unusual number of distinct payers relative to customer profile,30
+ALR-0230,CUS-10230,2026-09-01,TM-FAN-03,High number of unique inbound counterparties,Unusual number of distinct payers relative to customer profile,30
+ALR-0231,CUS-10231,2026-09-01,TM-LGC-06,Large credit inconsistent with profile,Single credit significantly above expected monthly inflow,30
+ALR-0232,CUS-10232,2026-09-01,TM-RMF-02,Rapid movement of funds,Large credits followed by outgoing transfers of similar value,30
+ALR-0233,CUS-10233,2026-09-01,TM-RMF-02,Rapid movement of funds,Large credits followed by outgoing transfers of similar value,30
+ALR-0234,CUS-10234,2026-09-01,SCR-PAY-05,Payment screening potential match,Counterparty name matched against sanctions list,30
+ALR-0235,CUS-10235,2026-09-01,SCR-PAY-05,Payment screening potential match,Counterparty name matched against sanctions list,30
+ALR-0236,CUS-10236,2026-09-01,TM-FAN-03,High number of unique inbound counterparties,Unusual number of distinct payers relative to customer profile,30
+ALR-0237,CUS-10237,2026-09-01,TM-LGC-06,Large credit inconsistent with profile,Single credit significantly above expected monthly inflow,30
+ALR-0238,CUS-10238,2026-09-01,TM-RMF-02,Rapid movement of funds,Large credits followed by outgoing transfers of similar value,30
+ALR-0239,CUS-10239,2026-09-01,TM-FAN-03,High number of unique inbound counterparties,Unusual number of distinct payers relative to customer profile,30
+ALR-0240,CUS-10240,2026-09-01,TM-FAN-03,High number of unique inbound counterparties,Unusual number of distinct payers relative to customer profile,30
+ALR-0241,CUS-10241,2026-09-01,TM-CASH-01,Cash deposits near reporting threshold,"Multiple cash deposits within 30 days, aggregate exceeds expected activity",30
+ALR-0242,CUS-10242,2026-09-01,TM-RMF-02,Rapid movement of funds,Large credits followed by outgoing transfers of similar value,30
+ALR-0243,CUS-10243,2026-09-01,TM-FAN-03,High number of unique inbound counterparties,Unusual number of distinct payers relative to customer profile,30
+ALR-0244,CUS-10244,2026-09-01,TM-FAN-03,High number of unique inbound counterparties,Unusual number of distinct payers relative to customer profile,30
+ALR-0245,CUS-10245,2026-09-01,TM-CASH-01,Cash deposits near reporting threshold,"Multiple cash deposits within 30 days, aggregate exceeds expected activity",30
+ALR-0246,CUS-10246,2026-09-01,TM-FAN-03,High number of unique inbound counterparties,Unusual number of distinct payers relative to customer profile,30
+ALR-0247,CUS-10247,2026-09-01,TM-FAN-03,High number of unique inbound counterparties,Unusual number of distinct payers relative to customer profile,30
+ALR-0248,CUS-10248,2026-09-01,TM-RMF-02,Rapid movement of funds,Large credits followed by outgoing transfers of similar value,30
