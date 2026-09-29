@@ -2,6 +2,48 @@
   "alerts": 248,
   "suspicious": 104,
   "benign": 144,
+  "accuracy": 0.871,
+  "precision": 0.875,
+  "recall": 0.808,
+  "f1": 0.84,
+  "roc_auc": 0.923,
+  "confusion": {
+    "tp": 84,
+    "fp": 12,
+    "fn": 20,
+    "tn": 132
+  },
+  "action_accuracy": 0.81,
+  "action_accuracy_suspicious": 0.663,
+  "harmful_action_rate_benign": 0.083,
+  "documents_requested_benign": 0.0,
+  "no_action_on_suspicious": 0.192,
+  "action_confusion": {
+    "CLOSE_ACCOUNT": {
+      "CLOSE_ACCOUNT": 25,
+      "NO_ACTION": 12,
+      "REQUEST_DOCUMENTS": 0,
+      "RESTRICT": 0
+    },
+    "NO_ACTION": {
+      "CLOSE_ACCOUNT": 5,
+      "NO_ACTION": 132,
+      "REQUEST_DOCUMENTS": 0,
+      "RESTRICT": 15
+    },
+    "REQUEST_DOCUMENTS": {
+      "CLOSE_ACCOUNT": 14,
+      "NO_ACTION": 0,
+      "REQUEST_DOCUMENTS": 32,
+      "RESTRICT": 1
+    },
+    "RESTRICT": {
+      "CLOSE_ACCOUNT": 0,
+      "NO_ACTION": 0,
+      "REQUEST_DOCUMENTS": 0,
+      "RESTRICT": 12
+    }
+  },
   "model_recall": 0.808,
   "system_recall_after_guardrails": 1.0,
   "missed_suspicious": 20,
@@ -123,5 +165,5 @@
       "qa_per_auto_close": 3
     }
   },
-  "mean_seconds_per_alert": 0.118
+  "mean_seconds_per_alert": 0.047
 }

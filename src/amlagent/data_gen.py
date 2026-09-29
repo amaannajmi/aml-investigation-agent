@@ -424,7 +424,8 @@ def generate(seed: int = 42, per_suspicious: int = 16, per_benign: int = 24, per
     if not with_identity:
         return frames
     from .identity_gen import add_identity_layer   # v2: identity, logins, devices, instruments, disputes, network accounts
-    return add_identity_layer(frames, seed)
+    from .profile_gen import enrich                # v3: profile, past financials, account events, expected actions
+    return enrich(add_identity_layer(frames, seed), seed)
 
 
 def main() -> None:
@@ -438,7 +439,8 @@ def main() -> None:
     gt = frames["ground_truth"]
     print(f"Wrote {len(frames['alerts'])} alerts, {len(frames['customers'])} customers "
           f"({int(frames['customers'].in_alert_queue.sum())} alerted + network accounts), {len(frames['transactions'])} transactions, "
-          f"{len(frames['logins'])} logins, {len(frames['instruments'])} instruments, {len(frames['disputes'])} disputes to {DATA_DIR}")
+          f"{len(frames['logins'])} logins, {len(frames['instruments'])} instruments, {len(frames['disputes'])} disputes, "
+          f"{len(frames['account_events'])} account events to {DATA_DIR}")
     print(gt.groupby(["is_suspicious", "scenario"]).size().to_string())
 
 

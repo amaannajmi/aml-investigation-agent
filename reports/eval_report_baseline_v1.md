@@ -1,6 +1,6 @@
 # Evaluation report: baseline-rules-v1
 
-Run `20260929T200941_baseline-rules-v1` · model `deterministic` · 248 alerts (104 suspicious, 144 benign) · auto-close confidence threshold 0.85
+Run `20260929T204119_baseline-rules-v1` · model `deterministic` · 248 alerts (104 suspicious, 144 benign) · auto-close confidence threshold 0.85
 
 ## Headline
 
@@ -15,6 +15,21 @@ Run `20260929T200941_baseline-rules-v1` · model `deterministic` · 248 alerts (
 | Guardrail violation rate | 0.0% | Fabricated citations, missing evidence, policy breaches |
 | Narrative structure pass rate | 100.0% | Subject, dates, amounts, IDs, typology present |
 | Estimated analyst hours | 186.0h → 35.2h (−81.1%) | Illustrative; assumptions below |
+
+## Classification metrics
+
+Accuracy **87.1%** · precision 87.5% · recall 80.8% · F1 84.0% · ROC AUC **0.923** · confusion TP 84 / FP 12 / FN 20 / TN 132
+
+## Account action (ban / restrict / request documents / no action)
+
+Action accuracy **81.0%** (suspicious only 66.3%) · harmful action on benign (restrict or close) **8.3%** · documents requested from benign customers 0.0% · no action on suspicious 19.2%
+
+| Expected \ Recommended | NO_ACTION | REQUEST_DOCUMENTS | RESTRICT | CLOSE_ACCOUNT |
+|---|---|---|---|---|
+| NO_ACTION | 132 | 0 | 0 | 12 |
+| REQUEST_DOCUMENTS | 0 | 32 | 0 | 0 |
+| RESTRICT | 15 | 1 | 12 | 0 |
+| CLOSE_ACCOUNT | 5 | 14 | 0 | 25 |
 
 ## Recall by typology and difficulty
 
@@ -92,4 +107,4 @@ None.
 
 - Workload estimate assumes 45 min per manual L1 investigation, 12 min to review an agent-prepared case, and 3 min of sampled QA per auto-closed alert.
 - The dataset is synthetic with a 40% suspicious rate. Real alert queues are typically over 90% false positives, so precision here overstates production precision.
-- Mean processing time 0.118s per alert.
+- Mean processing time 0.047s per alert.

@@ -17,8 +17,9 @@ from rapidfuzz import fuzz, process
 from . import config as C
 
 
-KYC_FIELDS = ["customer_id", "customer_name", "customer_type", "occupation", "expected_monthly_inflow_eur",
-              "onboarding_date", "residence_country", "nationality", "risk_rating", "declared_counterparty_countries"]
+KYC_FIELDS = ["customer_id", "customer_name", "customer_type", "customer_category", "occupation", "business_type",
+              "expected_monthly_inflow_eur", "onboarding_date", "date_of_birth", "address", "residence_country",
+              "nationality", "risk_rating", "declared_counterparty_countries"]
 IDENTITY_FIELDS = ["customer_id", "signup_date", "signup_ip", "signup_country", "signup_device_id", "phone", "email",
                    "home_city", "account_status", "status_reason", "prior_sar"]
 ADVERSE_STATUSES = {"CLOSED", "LIMITED"}
@@ -32,6 +33,13 @@ BASE_STRENGTH = {"device_id": "strong", "bank_fingerprint": "strong", "phone": "
 STRENGTH_RANK = {"strong": 3, "medium": 2, "weak": 1}
 
 
+def _events(df):
+    if df is not None:
+        df["timestamp"] = pd.to_datetime(df["timestamp"], format="ISO8601")
+        df = df.fillna("")
+    return df
+
+
 @dataclass
 class CaseData:
     customers: pd.DataFrame
@@ -41,6 +49,7 @@ class CaseData:
     logins: pd.DataFrame | None = None
     instruments: pd.DataFrame | None = None
     disputes: pd.DataFrame | None = None
+    events: pd.DataFrame | None = None
 
     @classmethod
     def load(cls, data_dir=C.DATA_DIR) -> "CaseData":
@@ -64,6 +73,7 @@ class CaseData:
             alerts=pd.read_csv(data_dir / "alerts.csv"),
             sanctions=pd.read_csv(data_dir / "sanctions_list.csv"),
             logins=logins, instruments=opt("instruments"), disputes=opt("disputes"),
+            events=_events(opt("account_events")),
         )
 
     @property
@@ -76,6 +86,14 @@ class CaseData:
 
     def txns(self, customer_id: str) -> pd.DataFrame:
         return self._tx_by_customer.get(customer_id, self.transactions.iloc[0:0])
+
+    @cached_property
+    def customer_rows(self) -> dict[str, dict]:
+        return self.customers.set_index("customer_id", drop=False).to_dict("index")
+
+    @cached_property
+    def logins_by_customer(self) -> dict[str, pd.DataFrame]:
+        return {} if self.logins is None else {cid: g for cid, g in self.logins.groupby("customer_id")}
 
     @cached_property
     def link_index(self) -> dict[tuple[str, str], set[str]]:
@@ -97,8 +115,9 @@ class CaseData:
             add("email", r.email, r.customer_id)
             add("ip", r.signup_ip, r.customer_id)
             add("device_id", r.signup_device_id, r.customer_id)
-        for r in self.instruments[["customer_id", "fingerprint"]].itertuples(index=False):
-            add("bank_fingerprint", r.fingerprint, r.customer_id)
+        if self.instruments is not None:
+            for r in self.instruments[["customer_id", "fingerprint"]].itertuples(index=False):   # active and past
+                add("bank_fingerprint", r.fingerprint, r.customer_id)
         return idx
 
     @cached_property
@@ -106,6 +125,17 @@ class CaseData:
         if not self.has_identity:
             return {}
         return self.logins.groupby("ip").ip_type.agg(lambda s: s.mode().iat[0]).to_dict()
+
+
+def _memo(fn):
+    """Cache a read-only tool's result on the Toolbox (one alert), keyed by its arguments."""
+    def wrapper(self, *a, **kw):
+        key = (fn.__name__, a, tuple(sorted(kw.items())))
+        if key not in self._cache:
+            self._cache[key] = fn(self, *a, **kw)
+        return self._cache[key]
+    wrapper.__name__, wrapper.__doc__ = fn.__name__, fn.__doc__
+    return wrapper
 
 
 class Toolbox:
@@ -122,6 +152,7 @@ class Toolbox:
         self.as_of = datetime.fromisoformat(self.alert["alert_date"]) + timedelta(hours=23, minutes=59)
         self.window_start = self.as_of - timedelta(days=int(self.alert["lookback_days"]))
         self.history_start = self.window_start - timedelta(days=C.HISTORY_DAYS)
+        self._cache: dict = {}
 
     # ---------------------------------------------------------------- tools
     def get_alert(self) -> dict:
@@ -144,6 +175,10 @@ class Toolbox:
         small_card = tx[(tx.channel == "CARD") & (tx.amount_eur < 150)]
         listed = tx.drop(small_card.index)
         rows = listed.head(limit).assign(timestamp=lambda d: d.timestamp.dt.strftime("%Y-%m-%d %H:%M"))
+        if self.data.disputes is not None:
+            d = self._disputes().set_index("txn_id")
+            rows = rows.assign(disputed=rows.txn_id.map(lambda t: "Y" if t in d.index else "N"),
+                               dispute_reason=rows.txn_id.map(lambda t: str(d.loc[t, "reason"]) if t in d.index else ""))
         return {
             "customer_id": self.customer_id, "period": period,
             "count": int(len(listed)), "truncated": bool(len(listed) > limit),
@@ -151,6 +186,7 @@ class Toolbox:
             "transactions": rows.drop(columns=["customer_id"]).to_dict("records"),
         }
 
+    @_memo
     def screen_counterparties(self) -> dict:
         """Fuzzy-screen the customer and every counterparty in the full period against the sanctions list."""
         tx = self._period("all")
@@ -176,6 +212,7 @@ class Toolbox:
         hits.sort(key=lambda h: -h["score"])
         return {"threshold": C.SANCTIONS_MATCH_THRESHOLD, "screened_names": len(names), "results": hits}
 
+    @_memo
     def compute_risk_indicators(self) -> dict:
         """Deterministic behavioural metrics for the alert window, compared with the customer's own history."""
         prof = self.get_customer_profile()
@@ -285,6 +322,7 @@ class Toolbox:
                 "countries_90d": sorted(lg.country.unique().tolist()),
                 "logins": rows.drop(columns=["customer_id"]).to_dict("records")}
 
+    @_memo
     def get_linked_accounts(self) -> dict:
         """Other accounts that share an identifier with this customer (device ID, visitor ID, IP, phone, email,
         bank account / card fingerprint). Each link has a strength: IPs are weak on their own (households,
@@ -328,6 +366,35 @@ class Toolbox:
         return {"customer_id": self.customer_id, "count": int(len(d)),
                 "disputes": d.drop(columns=["customer_id"]).to_dict("records")}
 
+    @_memo
+    def get_financials(self) -> dict:
+        """Bank accounts and cards on this account, active and removed, with every other account that has
+        (or had) the same bank account or card."""
+        if self.data.instruments is None:
+            return {"customer_id": self.customer_id, "active": [], "removed": []}
+        inst = self.data.instruments.fillna("")
+        mine = inst[inst.customer_id == self.customer_id]
+        rows = []
+        for r in mine.to_dict("records"):
+            others = sorted(self.data.link_index.get(("bank_fingerprint", r["fingerprint"]), set()) - {self.customer_id})
+            r["also_on_accounts"] = [{"customer_id": o, "account_status": self._customer_row(o)["account_status"],
+                                      "prior_sar": bool(self._customer_row(o)["prior_sar"])} for o in others]
+            rows.append({k: v for k, v in r.items() if k != "customer_id"})
+        return {"customer_id": self.customer_id,
+                "active": [r for r in rows if r.get("status", "ACTIVE") == "ACTIVE"],
+                "removed": [r for r in rows if r.get("status") == "REMOVED"]}
+
+    def get_account_activity(self) -> dict:
+        """Non-payment account events in the last 90 days: financials added or removed, phone or email
+        changed, password resets. Each event has the IP, device and country it came from."""
+        e = self._events()
+        if not len(e):
+            return {"customer_id": self.customer_id, "events": []}
+        first_seen = self._logins().groupby("device_id").timestamp.min()
+        rows = e.assign(from_new_device=e.device_id.map(lambda d: bool(d in first_seen and first_seen[d] >= self.window_start)),
+                        timestamp=e.timestamp.dt.strftime("%Y-%m-%d %H:%M"))
+        return {"customer_id": self.customer_id, "events": rows.drop(columns=["customer_id"]).to_dict("records")}
+
     def _identity_indicators(self) -> dict:
         lg = self._logins()
         win = lg[lg.timestamp >= self.window_start]
@@ -342,6 +409,8 @@ class Toolbox:
         adverse = [l for l in links if l["is_adverse"] and STRENGTH_RANK[l["strongest_link"]] >= 2]
         d = self._disputes()
         victim = d[(d.filed_by == "payer") & d.reason.str.startswith(VICTIM_REASONS)] if len(d) else d
+        victim_live = victim[~victim.status.str.contains("withdrawn", case=False)] if len(victim) else victim
+        concurrent = self._adverse_device_concurrent(adverse)
         inbound_w = self._period("window")
         inbound_w = inbound_w[inbound_w.direction == "IN"]
         return {
@@ -365,10 +434,13 @@ class Toolbox:
                 "adverse_shared_identifier_types": sorted({s["identifier_type"] for l in adverse for s in l["shared"]
                                                           if STRENGTH_RANK[s["strength"]] >= 2}),
                 "weak_only_links": sum(1 for l in links if l["strongest_link"] == "weak"),
+                "adverse_device_used_concurrently": concurrent,
                 "clean_medium_links": sum(1 for l in links if l["strongest_link"] == "medium" and not l["is_adverse"]),
             },
+            "activity": self._activity_indicators(),
             "disputes": {
                 "total": int(len(d)), "victim_claims": int(len(victim)),
+                "victim_claims_not_withdrawn": int(len(victim_live)),
                 "victim_claim_share_of_inbound_window": round(len(victim) / max(len(inbound_w), 1), 3),
                 "buyer_claims": int((d.filed_by == "buyer").sum()) if len(d) else 0,
                 "open": int(d.status.str.startswith("Open").sum()) if len(d) else 0,
@@ -376,6 +448,46 @@ class Toolbox:
                 "victim_claim_txn_ids": victim.txn_id.tolist() if len(d) else [],
             },
         }
+
+    def _adverse_device_concurrent(self, adverse: list[dict]) -> bool:
+        """Did a closed/limited account use a shared device during this customer's alert window (a live shared
+        device), rather than months earlier (for example a second-hand phone)?"""
+        lg = self.data.logins
+        for l in adverse:
+            for sh in l["shared"]:
+                if sh["identifier_type"] in ("device_id", "visitor_id"):
+                    col = "device_id" if sh["identifier_type"] == "device_id" else "visitor_id"
+                    other = lg[(lg.customer_id == l["customer_id"]) & (lg[col] == sh["value"])]
+                    if (other.timestamp >= self.window_start).any():
+                        return True
+        return False
+
+    def _activity_indicators(self) -> dict:
+        e = self._events()
+        w = e[e.timestamp >= self.window_start] if len(e) else e
+        home = self._customer_row(self.customer_id).get("residence_country", "IE")
+        first_seen = self._logins().groupby("device_id").timestamp.min()
+        new_dev = {d for d, t in first_seen.items() if t >= self.window_start}
+        sensitive = w[w.event_type.isin(["PASSWORD_RESET", "PHONE_CHANGED", "EMAIL_CHANGED"])] if len(w) else w
+        fin_added = w[w.event_type == "FINANCIAL_ADDED"] if len(w) else w
+        fin_removed = w[w.event_type == "FINANCIAL_REMOVED"] if len(w) else w
+        removed_after_use = fin_removed[fin_removed.details.str.contains("after withdrawals")] if len(w) else w
+        risky = w[w.device_id.isin(new_dev) | (w.country.astype(str).ne(home) & w.country.astype(str).ne(""))] if len(w) else w
+        return {
+            "events_window": int(len(w)),
+            "credential_or_contact_changes_window": int(len(sensitive)),
+            "financials_added_window": int(len(fin_added)),
+            "financials_removed_window": int(len(fin_removed)),
+            "financial_added_then_removed_window": bool(len(fin_added) and len(removed_after_use)),
+            "events_from_new_device_or_abroad": int(len(risky)),
+            "risky_event_ids": risky.event_id.tolist() if len(w) else [],
+        }
+
+    def _events(self) -> pd.DataFrame:
+        if self.data.events is None:
+            return pd.DataFrame(columns=["event_id", "customer_id", "timestamp", "event_type", "details", "ip", "device_id", "country"])
+        e = self.data.events
+        return e[(e.customer_id == self.customer_id) & (e.timestamp <= self.as_of)]
 
     def _my_identifiers(self) -> dict[tuple[str, str], dict]:
         """This customer's identifiers, with the login IDs that show each one being used."""
@@ -408,14 +520,13 @@ class Toolbox:
         return r.get("account_status") in ADVERSE_STATUSES or bool(r.get("prior_sar"))
 
     def _customer_row(self, cid: str) -> dict:
-        return self.data.customers.loc[self.data.customers.customer_id == cid].iloc[0].to_dict()
+        return self.data.customer_rows[cid]
 
     def _logins(self) -> pd.DataFrame:
         if not self.data.has_identity:
             return pd.DataFrame(columns=["login_id", "customer_id", "timestamp", "ip", "ip_type", "country", "device_id", "visitor_id"])
-        lg = self.data.logins
-        lg = lg[(lg.customer_id == self.customer_id) & (lg.timestamp <= self.as_of)]
-        return lg
+        lg = self.data.logins_by_customer.get(self.customer_id, self.data.logins.iloc[0:0])
+        return lg[lg.timestamp <= self.as_of]
 
     def _disputes(self) -> pd.DataFrame:
         if self.data.disputes is None:
@@ -439,7 +550,7 @@ class Toolbox:
         """Every ID the agent may legitimately cite: its transactions, logins, disputes, and linked accounts."""
         ids = self.all_txn_ids() | {self.customer_id}
         if self.data.has_identity:
-            ids |= set(self._logins().login_id) | set(self._disputes().dispute_id)
+            ids |= set(self._logins().login_id) | set(self._disputes().dispute_id) | set(self._events().event_id)
             ids |= {l["customer_id"] for l in self.get_linked_accounts()["linked_accounts"]}
         return ids
 
@@ -465,6 +576,10 @@ TOOL_SPECS = [
     {"name": "get_login_history", "description": "Most recent logins, newest first: IP, IP type (residential, mobile, public_wifi, hosting_vpn), city, country, device ID (DID), visitor ID (VID) and whether the device is new in the alert window.",
      "input_schema": {"type": "object", "properties": {"limit": {"type": "integer", "maximum": 100}}}},
     {"name": "get_linked_accounts", "description": "Accounts sharing an identifier with this customer (device, visitor ID, IP, phone, email, bank account or card fingerprint), with link strength, how many accounts share it, and each linked account's status, status reason and prior SAR flag.",
+     "input_schema": {"type": "object", "properties": {}}},
+    {"name": "get_financials", "description": "Bank accounts and cards on this account, active and removed (with dates), and every other account that has or had the same bank account or card, with that account's status and prior-SAR flag.",
+     "input_schema": {"type": "object", "properties": {}}},
+    {"name": "get_account_activity", "description": "Account events in the last 90 days: financial added/removed, phone or email changed, password reset. Each event has its IP, device, country and whether the device is new in the alert window.",
      "input_schema": {"type": "object", "properties": {}}},
     {"name": "get_disputes", "description": "Disputes raised on this account's transactions: who filed (payer or buyer), reason (unauthorised, scam, item not received), amount, status.",
      "input_schema": {"type": "object", "properties": {}}},

@@ -28,12 +28,16 @@ def _eur(x: float) -> str:
 
 
 class BaselineAgent:
-    """use_identity=False reproduces v1 (transactions only); True adds access, network and dispute rules (v2)."""
+    """level 1: transactions only (v1). level 2: + access, network and dispute rules (v2).
+    level 3: + account activity (credential/contact changes, financials added and removed) (v3)."""
     model = "deterministic"
 
-    def __init__(self, use_identity: bool = True):
-        self.use_identity = use_identity
-        self.name = "baseline-rules-v2" if use_identity else "baseline-rules-v1"
+    def __init__(self, level: int = 3, use_identity: bool | None = None):
+        if use_identity is not None:            # backwards compatible
+            level = 3 if use_identity else 1
+        self.level = level
+        self.use_identity = level >= 2
+        self.name = f"baseline-rules-v{level}"
 
     def investigate(self, tb: Toolbox, audit: AuditLog) -> tuple[Decision, dict]:
         alert = audit.tool_call(tb, "get_alert")
@@ -126,8 +130,29 @@ class BaselineAgent:
 
         if self.use_identity and "network" in ind:
             self._identity_rules(tb, audit, alert, ind, scr, findings, benign)
+        if self.level >= 3 and "activity" in ind:
+            self._activity_rules(tb, audit, alert, ind, findings)
 
         return self._decide(tb, alert, prof, findings, benign), {"screening": scr, "indicators": ind}
+
+    # --- v3: account activity -------------------------------------------------------------------------
+    def _activity_rules(self, tb, audit, alert, ind, findings):
+        audit.tool_call(tb, "get_financials")
+        audit.tool_call(tb, "get_account_activity")
+        act, acc = ind["activity"], ind["access"]
+        typ = "pass_through" if alert["rule_id"] == "TM-RMF-02" else "money_mule"
+        if act["financial_added_then_removed_window"]:
+            findings.append(("RECOMMEND_SAR", typ, 0.85,
+                             "A withdrawal account was added in the window and removed again after funds were paid out to it",
+                             act["risky_event_ids"]))
+        if act["credential_or_contact_changes_window"] and act["events_from_new_device_or_abroad"] and acc["new_devices_window"]:
+            text = ("Password reset and/or phone/email change made from a device first seen in the window: "
+                    "the account may have been sold, rented out or taken over")
+            if findings:
+                d, t, c, i, e = findings[0]
+                findings[0] = (d, t, min(0.95, c + 0.05), i + "; " + text, e + act["risky_event_ids"])
+            elif alert["rule_id"] in ("TM-RMF-02", "TM-FAN-03"):
+                findings.append(("ESCALATE_L2", typ, 0.65, text, act["risky_event_ids"] + acc["evidence_login_ids"][:3]))
 
     # --- v2: access, network and dispute evidence -------------------------------------------------------
     def _identity_rules(self, tb, audit, alert, ind, scr, findings, benign):
@@ -225,10 +250,14 @@ class BaselineAgent:
                 f"Suspected typology: {', '.join(typs).replace('_', ' ')}. The activity is inconsistent with the customer's "
                 f"stated profile and no legitimate explanation was identified in the available data."
             )
+            action, action_reason, docs = self._account_action(disp, typs, conf, tb)
             return Decision(alert_id=alert["alert_id"], disposition=disp, typologies=typs, confidence=round(conf, 2),
                             risk_indicators=indicators, evidence_txn_ids=ev,
                             rationale=f"{len(findings)} red flag(s); highest severity drives the disposition.",
-                            narrative=narrative, agent=self.name, model=self.model)
+                            narrative=narrative, agent=self.name, model=self.model,
+                            account_action=action, account_action_reason=action_reason, documents_requested=docs,
+                            sar_reasoning=self._sar_reasoning(disp, typs, indicators),
+                            flagged_items=self._flagged(findings, tb)[:20])
         # only a benign explanation that addresses what triggered the alert counts
         relevant = [b for b in benign if b[0] in RULE_SIGNALS.get(alert["rule_id"], set())]
         conf = min((b[1] for b in relevant), default=0.7)
@@ -239,4 +268,54 @@ class BaselineAgent:
                         rationale=" | ".join(why),
                         narrative=f"Alert {alert['alert_id']} ({alert['rule_name']}) on {prof['customer_name']} "
                                   f"({prof['customer_id']}) reviewed. " + " ".join(why) + ". Recommend close as false positive.",
-                        agent=self.name, model=self.model)
+                        agent=self.name, model=self.model,
+                        account_action="NO_ACTION", account_action_reason="No grounds for restriction: " + why[0],
+                        sar_reasoning="No SAR: " + ("a benign explanation is evidenced." if relevant else
+                                                    "no red flags found; an analyst confirms before closing."))
+
+    # --- account action, documents, SAR reasoning, per-item reasons --------------------------------------
+    DOCS = {
+        "structuring": ["Source of funds for the cash deposited (for example payslips, sale receipts or business takings records)",
+                        "Explanation of why the funds were deposited in several separate amounts"],
+        "high_risk_jurisdiction": ["Purpose of the payments and relationship to the beneficiary",
+                                   "Supporting invoices, contracts or other documents for the payments"],
+        "money_mule": ["Explanation of the incoming payments and your relationship to the payers",
+                       "Proof of identity (photo ID and a selfie) to confirm you are the account holder"],
+        "pass_through": ["Explanation of the business purpose of the incoming and outgoing transfers",
+                         "Invoices or contracts supporting the transfers"],
+        "sanctions_exposure": ["Full name, address and registration details of the payee",
+                               "Contract and invoices for the payment"],
+    }
+
+    def _account_action(self, disp, typs, conf, tb):
+        t = typs[0]
+        if disp == "RECOMMEND_SAR" and t in ("money_mule", "pass_through") and conf >= 0.85:
+            return ("CLOSE_ACCOUNT", f"Strong evidence the account is being used to move third-party funds ({t.replace('_', ' ')}): "
+                                     "exit the relationship after the SAR decision; restrict outgoing payments meanwhile", [])
+        if t == "sanctions_exposure":
+            return ("RESTRICT", "Potential sanctions exposure: freeze the affected funds and restrict outgoing payments until the "
+                                "match is confirmed or discounted", self.DOCS[t])
+        if t in ("structuring", "high_risk_jurisdiction") or disp == "ESCALATE_L2":
+            return ("REQUEST_DOCUMENTS", "Grounds to understand the activity before deciding: request supporting documents",
+                    self.DOCS.get(t, self.DOCS["money_mule"]))
+        return ("RESTRICT", "Suspicious activity reported: restrict outgoing payments pending review", [])
+
+    @staticmethod
+    def _sar_reasoning(disp, typs, indicators):
+        t = ", ".join(typs).replace("_", " ")
+        if disp == "RECOMMEND_SAR":
+            return (f"File a SAR: reasonable grounds to suspect {t} ({indicators[0][:160]}). File without delay once the MLRO "
+                    f"approves, before or alongside any account exit, and do not tell the customer a report is being made.")
+        return (f"No SAR yet: red flags for {t} need L2 review. The SAR decision must be made as soon as the review "
+                f"establishes, or rules out, reasonable grounds for suspicion.")
+
+    @staticmethod
+    def _flagged(findings, tb):
+        kinds = {"TXN": "transaction", "LGN": "login", "DSP": "dispute", "EVT": "account activity", "CUS": "linked account"}
+        out, seen = [], set()
+        for _, _, _, reason, ev in findings:
+            for i in ev:
+                if i not in seen:
+                    seen.add(i)
+                    out.append({"id": i, "kind": kinds.get(i.split("-")[0], "item"), "reason": reason[:200]})
+        return out

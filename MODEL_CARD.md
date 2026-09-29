@@ -1,4 +1,4 @@
-# Model card: AML Investigation Agent v0.2.0
+# Model card: AML Investigation Agent v0.3.0
 
 ## Intended use
 
@@ -27,6 +27,30 @@ Synthetic alert queue (248 alerts, 104 suspicious) covering structuring, pass-th
 Model recall; system recall after guardrails (suspicious alerts not auto-closed); false-positive clearance; auto-close rate; escalation precision; typology accuracy; guardrail violation rate; narrative structure pass rate; per-scenario and per-difficulty breakdowns; itemised misses.
 
 **Recall is the primary metric.** A missed suspicious case is a regulatory failure; an unnecessary escalation is a cost.
+
+## Account actions and SAR reasoning (v0.3)
+
+The agent recommends an account action (no action, request documents, restrict, close account) and explains whether and when a SAR is needed. None of these is executed by the system:
+- restrictions need an analyst's approval
+- closures need an analyst's approval and MLRO sign-off
+- document requests during a suspicion review need MLRO approval of the wording, because of the tipping-off risk
+
+A guardrail blocks request wording that mentions suspicion, reporting, laundering, fraud, investigation or the police.
+
+Action accuracy is measured against an expected action per scenario. That mapping is a simplification: in practice the right action depends on policy, risk appetite and the customer relationship.
+
+## Learning from analyst decisions (v0.3)
+
+- **What learns:** a logistic regression over the investigation indicators, trained on analyst decisions. The rules and the LLM are not modified automatically. The LLM receives recent analyst overrides, with reasons, as lessons in its prompt.
+- **Evaluation:** always on alerts no analyst has decided. The learned agent is compared with the rules on exactly the same held-out alerts.
+- **Where it can go wrong:** feedback loops (analysts agreeing with the agent teach the model to agree with the agent), label noise, a small sample, drift, and leakage from features that encode how the data was produced. In the demo, the top-weighted feature is partly a generator artefact.
+- **Controls before production:**
+  - treat the learned score as a **challenger**, not the decision-maker
+  - validate every retrain on a fixed held-out set with sign-off
+  - monitor calibration and the override rate
+  - review feature weights for leakage and proxies
+  - keep every model version and its training set for audit
+  - when the learned score and the rules disagree, send the case to a human (already enforced)
 
 ## Known limitations and failure modes
 

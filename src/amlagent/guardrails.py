@@ -11,7 +11,9 @@ from . import config as C
 from .schema import AUTO_CLOSE_ELIGIBLE, HUMAN_REVIEW, SAR_PENDING, Decision, GuardrailResult
 from .tools import Toolbox
 
-ID_RE = re.compile(r"\b(?:TXN-\d+|LGN-\d+|DSP-\d+|CUS-\d+)\b")   # transactions, logins, disputes, accounts
+ID_RE = re.compile(r"\b(?:TXN-\d+|LGN-\d+|DSP-\d+|EVT-\d+|CUS-\d+)\b")   # transactions, logins, disputes, events, accounts
+TIPPING_OFF_TERMS = ("suspicious", "suspicion", "sar", "money laundering", "laundering", "investigation", "report to",
+                     "police", "fiu", "garda", "law enforcement", "fraud")
 AMOUNT_RE = re.compile(r"(?:EUR|€)\s?([\d,]+(?:\.\d{1,2})?)")
 
 
@@ -45,7 +47,8 @@ def apply_guardrails(decision: Decision, tb: Toolbox, screening: dict | None = N
 
     # 2. Grounding: every ID the agent cites (transaction, login, dispute, linked account) must exist and be
     #    reachable from this customer's case
-    cited = set(decision.evidence_txn_ids) | set(ID_RE.findall(decision.narrative)) | set(ID_RE.findall(decision.rationale))
+    cited = set(decision.evidence_txn_ids) | set(ID_RE.findall(decision.narrative)) | set(ID_RE.findall(decision.rationale)) \
+        | {str(f.get("id")) for f in decision.flagged_items if f.get("id")}
     fabricated = sorted(cited - known)
     check("citations_grounded", not fabricated,
           f"cited IDs not found in this case: {fabricated}" if fabricated else f"{len(cited)} citations verified")
@@ -76,6 +79,21 @@ def apply_guardrails(decision: Decision, tb: Toolbox, screening: dict | None = N
                          f"{strong[0]['list_name']} ({strong[0]['score']}) cannot be closed by an agent")
     check("sanctions_policy", not (strong and decision.disposition == "CLOSE_FALSE_POSITIVE"),
           overrides[-1] if overrides else "")
+
+    # 6. The account action must agree with the disposition
+    if decision.account_action in ("RESTRICT", "CLOSE_ACCOUNT") and disposition == "CLOSE_FALSE_POSITIVE":
+        check("action_consistent", False, f"{decision.account_action} recommended on an alert recommended for closure")
+    if decision.account_action in ("RESTRICT", "CLOSE_ACCOUNT"):
+        overrides.append(f"{decision.account_action.replace('_', ' ').title()} is a recommendation: it needs analyst "
+                         f"approval{' and MLRO sign-off' if decision.account_action == 'CLOSE_ACCOUNT' else ''}")
+
+    # 7. Tipping-off: a document request sent while a SAR is being considered must not reveal the suspicion
+    if decision.account_action == "REQUEST_DOCUMENTS" or decision.documents_requested:
+        wording = " ".join(decision.documents_requested).lower()
+        leaks = [w for w in TIPPING_OFF_TERMS if re.search(rf"\b{re.escape(w)}\b", wording)]
+        check("tipping_off_wording", not leaks, f"request wording mentions: {leaks}" if leaks else "neutral wording")
+        if decision.is_escalation:
+            overrides.append("Document request during a suspicion review: MLRO to approve wording before it is sent (tipping-off)")
 
     # Final routing. The agent never files or closes on its own authority.
     hard_fail = any(not c["passed"] for c in checks)

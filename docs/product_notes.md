@@ -14,6 +14,12 @@ Written as a product owner reading the evaluation, not as the engineer who built
 5. **Link strength is a product decision, not a detail.** Treating a shared IP like a shared device would flag every flat-share and every mobile user. Grading links and suppressing super-nodes is what makes the network view usable.
 6. **The remaining errors need reading, not counting.** A withdrawn dispute, a device used by a closed account months *before* this customer had it, a fresh mule with a new device and nothing else. Rules count; the LLM agent has to read status and timing. That is the test for `make eval-claude`.
 
+## What v3 (account activity, actions, learning) showed
+
+7. **Account activity catches what nothing else does.** Fresh mules have no network and no complaints yet. The only signal is a new device resetting the password and changing the phone, then money flowing through. That took mule recall to 100%.
+8. **The recommendation an ops team needs is an action, not a label.** "Suspicious" is not enough. The team needs to know whether to close, restrict, or ask for documents, and when the SAR goes. Tipping-off turns "ask for documents" into a compliance-sensitive step, so it gets its own guardrail.
+9. **Analyst decisions are the cheapest labels there are.** Learning from them cleared the traps the rules fell for. But a model that learns from analysts can also learn to agree with the agent. Held-out scoring, challenger status and human review on disagreement are what make that safe.
+
 ## Priorities
 
 | # | Item | Why now | How we will know it worked |

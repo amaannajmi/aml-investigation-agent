@@ -10,9 +10,12 @@ from .tools import CaseData, Toolbox
 
 
 def make_agent(kind: str, **kw):
-    if kind in ("baseline", "baseline_v1"):
+    if kind in ("baseline", "baseline_v1", "baseline_v2"):
         from .agents.baseline import BaselineAgent
-        return BaselineAgent(use_identity=(kind == "baseline"))
+        return BaselineAgent(level={"baseline_v1": 1, "baseline_v2": 2}.get(kind, 3))
+    if kind == "learned":
+        from .learning import LearnedAgent
+        return LearnedAgent()
     if kind == "claude":
         from .agents.claude_agent import ClaudeAgent
         return ClaudeAgent(**kw)

@@ -2,17 +2,59 @@
   "alerts": 248,
   "suspicious": 104,
   "benign": 144,
-  "model_recall": 0.942,
+  "accuracy": 0.964,
+  "precision": 0.952,
+  "recall": 0.962,
+  "f1": 0.957,
+  "roc_auc": 0.98,
+  "confusion": {
+    "tp": 100,
+    "fp": 5,
+    "fn": 4,
+    "tn": 139
+  },
+  "action_accuracy": 0.911,
+  "action_accuracy_suspicious": 0.837,
+  "harmful_action_rate_benign": 0.021,
+  "documents_requested_benign": 0.014,
+  "no_action_on_suspicious": 0.038,
+  "action_confusion": {
+    "CLOSE_ACCOUNT": {
+      "CLOSE_ACCOUNT": 32,
+      "NO_ACTION": 3,
+      "REQUEST_DOCUMENTS": 0,
+      "RESTRICT": 0
+    },
+    "NO_ACTION": {
+      "CLOSE_ACCOUNT": 0,
+      "NO_ACTION": 139,
+      "REQUEST_DOCUMENTS": 0,
+      "RESTRICT": 4
+    },
+    "REQUEST_DOCUMENTS": {
+      "CLOSE_ACCOUNT": 12,
+      "NO_ACTION": 2,
+      "REQUEST_DOCUMENTS": 32,
+      "RESTRICT": 1
+    },
+    "RESTRICT": {
+      "CLOSE_ACCOUNT": 0,
+      "NO_ACTION": 0,
+      "REQUEST_DOCUMENTS": 0,
+      "RESTRICT": 23
+    }
+  },
+  "model_recall": 0.962,
   "system_recall_after_guardrails": 1.0,
-  "missed_suspicious": 6,
+  "missed_suspicious": 4,
   "missed_after_guardrails": 0,
   "fp_clearance_rate": 0.965,
   "auto_close_rate_benign": 0.653,
-  "escalation_precision": 0.951,
+  "escalation_precision": 0.952,
   "sar_recommendations": 59,
   "typology_accuracy_on_caught": 0.98,
   "guardrail_violation_rate": 0.0,
-  "narrative_structure_pass_rate_escalations": 1.0,
+  "narrative_structure_pass_rate_escalations": 0.981,
   "recall_by_scenario": {
     "high_risk_jurisdiction": {
       "n": 16,
@@ -24,7 +66,7 @@
     },
     "mule_cash_out": {
       "n": 12,
-      "rate": 0.833
+      "rate": 1.0
     },
     "pass_through": {
       "n": 16,
@@ -46,7 +88,7 @@
   "recall_by_variant": {
     "hard": {
       "n": 33,
-      "rate": 0.909
+      "rate": 0.97
     },
     "standard": {
       "n": 71,
@@ -123,5 +165,5 @@
       "qa_per_auto_close": 3
     }
   },
-  "mean_seconds_per_alert": 0.15
+  "mean_seconds_per_alert": 0.061
 }

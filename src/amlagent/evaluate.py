@@ -22,7 +22,7 @@ import pandas as pd
 
 from . import config as C
 from .pipeline import investigate, make_agent, new_run_id
-from .schema import AUTO_CLOSE_ELIGIBLE
+from .schema import ACCOUNT_ACTIONS as ACTIONS, AUTO_CLOSE_ELIGIBLE
 from .tools import CaseData
 
 
@@ -44,12 +44,17 @@ def narrative_checks(d, prof_id: str) -> dict:
     return checks
 
 
-def run(agent_kind: str, limit: int | None = None, write_audit: bool = True, alert_ids: list[str] | None = None):
+def run(agent_kind: str, limit: int | None = None, write_audit: bool = True, alert_ids: list[str] | None = None,
+        tag: str | None = None):
     data = CaseData.load()
     truth = pd.read_csv(C.DATA_DIR / "ground_truth.csv")
     agent = make_agent(agent_kind)
     run_id = new_run_id(agent.name)
     ids = alert_ids or data.alerts.alert_id.tolist()
+    if agent_kind == "learned" and not alert_ids:
+        from .learning import holdout_ids
+        ids = holdout_ids(agent.m, data)      # never score the model on alerts it was trained on
+        print(f"  learned agent: evaluating on {len(ids)} alerts with no analyst decision (held out)")
     if limit:
         ids = ids[:limit]
     rows = []
@@ -59,7 +64,8 @@ def run(agent_kind: str, limit: int | None = None, write_audit: bool = True, ale
         rows.append({
             "alert_id": aid, "customer_id": data.alerts.set_index("alert_id").at[aid, "customer_id"],
             "disposition": d.disposition, "final_disposition": g.final_disposition, "final_status": g.final_status,
-            "typologies": ",".join(d.typologies), "confidence": d.confidence,
+            "typologies": ",".join(d.typologies), "confidence": d.confidence, "risk_score": round(d.score, 4),
+            "account_action": d.account_action, "n_flagged_items": len(d.flagged_items),
             "n_evidence": len(d.evidence_txn_ids), "guardrail_violations": ";".join(c["name"] for c in g.violations), "guardrail_detail": " | ".join(f"{c['name']}: {c['detail']}" for c in g.violations),
             "overrides": " | ".join(g.overrides), "seconds": round(r["seconds"], 3),
             "input_tokens": r["context"].get("usage", {}).get("input_tokens"),
@@ -72,11 +78,21 @@ def run(agent_kind: str, limit: int | None = None, write_audit: bool = True, ale
     res = pd.DataFrame(rows).merge(truth, on="alert_id")
     metrics = compute_metrics(res)
     C.REPORTS_DIR.mkdir(exist_ok=True)
-    tag = agent_kind
+    tag = tag or agent_kind
     res.to_csv(C.REPORTS_DIR / f"results_{tag}.csv", index=False)
     (C.REPORTS_DIR / f"metrics_{tag}.json").write_text(json.dumps(metrics, indent=2), encoding="utf-8")
     (C.REPORTS_DIR / f"eval_report_{tag}.md").write_text(render_report(metrics, res, agent, run_id), encoding="utf-8")
     return metrics, res, run_id
+
+
+def roc_auc(y, score) -> float:
+    """Probability a random suspicious alert scores higher than a random benign one (ties count half)."""
+    pos, neg = score[y == 1], score[y == 0]
+    if not len(pos) or not len(neg):
+        return float("nan")
+    greater = (pos[:, None] > neg[None, :]).sum()
+    ties = (pos[:, None] == neg[None, :]).sum()
+    return float((greater + 0.5 * ties) / (len(pos) * len(neg)))
 
 
 def compute_metrics(res: pd.DataFrame) -> dict:
@@ -96,8 +112,32 @@ def compute_metrics(res: pd.DataFrame) -> dict:
     def by(group_col, frame, ok):
         return {k: {"n": int(len(g)), "rate": round(float(ok.loc[g.index].mean()), 3)} for k, g in frame.groupby(group_col)}
 
+    y = res.is_suspicious.astype(int)
+    pred = (res.disposition != "CLOSE_FALSE_POSITIVE").astype(int)
+    tp, fp = int(((pred == 1) & (y == 1)).sum()), int(((pred == 1) & (y == 0)).sum())
+    fn, tn = int(((pred == 0) & (y == 1)).sum()), int(((pred == 0) & (y == 0)).sum())
+    prec = tp / (tp + fp) if tp + fp else 0.0
+    rec = tp / (tp + fn) if tp + fn else 0.0
+    actions = {}
+    if "expected_action" in res and "account_action" in res:
+        ok = res.account_action == res.expected_action
+        actions = {
+            "action_accuracy": round(float(ok.mean()), 3),
+            "action_accuracy_suspicious": round(float(ok[y == 1].mean()), 3),
+            "harmful_action_rate_benign": round(float(res.loc[y == 0, "account_action"].isin(["RESTRICT", "CLOSE_ACCOUNT"]).mean()), 3),
+            "documents_requested_benign": round(float((res.loc[y == 0, "account_action"] == "REQUEST_DOCUMENTS").mean()), 3),
+            "no_action_on_suspicious": round(float((res.loc[y == 1, "account_action"] == "NO_ACTION").mean()), 3),
+            "action_confusion": {a: {e: int(v) for e, v in col.items()}
+                                 for a, col in pd.crosstab(res.expected_action, res.account_action).to_dict().items()},
+        }
     return {
         "alerts": n, "suspicious": int(len(sus)), "benign": int(len(ben)),
+        "accuracy": round((tp + tn) / n, 3), "precision": round(prec, 3), "recall": round(rec, 3),
+        "f1": round(2 * prec * rec / (prec + rec), 3) if prec + rec else 0.0,
+        "roc_auc": round(roc_auc(y.to_numpy(), res.risk_score.to_numpy()), 3) if "risk_score" in res else None,
+        "confusion": {"tp": tp, "fp": fp, "fn": fn, "tn": tn},
+        **{k: v for k, v in actions.items() if k != "action_confusion"},
+        "action_confusion": actions.get("action_confusion", {}),
         "model_recall": round(float(caught.mean()), 3),
         "system_recall_after_guardrails": round(float(sys_caught.mean()), 3),
         "missed_suspicious": int((~caught).sum()),
@@ -142,7 +182,22 @@ def render_report(m: dict, res: pd.DataFrame, agent, run_id: str) -> str:
          f"| Narrative structure pass rate | {_pct(m['narrative_structure_pass_rate_escalations'])} | Subject, dates, amounts, IDs, typology present |",
          f"| Estimated analyst hours | {m['workload']['manual_hours']}h → {m['workload']['assisted_hours']}h "
          f"(−{_pct(m['workload']['hours_saved_pct'])}) | Illustrative; assumptions below |", "",
-         "## Recall by typology and difficulty", "", "| Scenario | n | Recall |", "|---|---|---|"]
+         "## Classification metrics", "",
+         f"Accuracy **{_pct(m['accuracy'])}** · precision {_pct(m['precision'])} · recall {_pct(m['recall'])} · "
+         f"F1 {_pct(m['f1'])} · ROC AUC **{m['roc_auc']}** · confusion TP {m['confusion']['tp']} / FP {m['confusion']['fp']} / "
+         f"FN {m['confusion']['fn']} / TN {m['confusion']['tn']}", ""]
+    if "action_accuracy" in m:
+        L += ["## Account action (ban / restrict / request documents / no action)", "",
+              f"Action accuracy **{_pct(m['action_accuracy'])}** (suspicious only {_pct(m['action_accuracy_suspicious'])}) · "
+              f"harmful action on benign (restrict or close) **{_pct(m['harmful_action_rate_benign'])}** · "
+              f"documents requested from benign customers {_pct(m['documents_requested_benign'])} · "
+              f"no action on suspicious {_pct(m['no_action_on_suspicious'])}", "",
+              "| Expected \\ Recommended | " + " | ".join(ACTIONS) + " |", "|---|" + "---|" * len(ACTIONS)]
+        conf = m["action_confusion"]
+        for exp in ACTIONS:
+            L.append(f"| {exp} | " + " | ".join(str(conf.get(act, {}).get(exp, 0)) for act in ACTIONS) + " |")
+        L.append("")
+    L += ["## Recall by typology and difficulty", "", "| Scenario | n | Recall |", "|---|---|---|"]
     L += [f"| {k} | {v['n']} | {_pct(v['rate'])} |" for k, v in m["recall_by_scenario"].items()]
     L += [f"| *variant: {k}* | {v['n']} | {_pct(v['rate'])} |" for k, v in m["recall_by_variant"].items()]
     L += ["", "## False-positive handling by scenario", "", "| Scenario | n | Recommended close | Auto-closed |", "|---|---|---|---|"]
@@ -178,11 +233,13 @@ def render_report(m: dict, res: pd.DataFrame, agent, run_id: str) -> str:
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--agent", choices=["baseline", "baseline_v1", "claude"], default="baseline")
+    ap.add_argument("--agent", choices=["baseline", "baseline_v1", "baseline_v2", "claude", "learned"], default="baseline")
     ap.add_argument("--limit", type=int, default=None)
     ap.add_argument("--no-audit", action="store_true")
     a = ap.parse_args()
-    m, _, run_id = run(a.agent, a.limit, not a.no_audit)
+    m, res, run_id = run(a.agent, a.limit, not a.no_audit)
+    if a.agent == "learned":      # fair comparison: the rules on exactly the same held-out alerts
+        run("baseline", write_audit=False, alert_ids=res.alert_id.tolist(), tag="baseline_holdout")
     print(json.dumps({k: v for k, v in m.items() if not isinstance(v, dict)}, indent=2))
     print(f"Report: {C.REPORTS_DIR / f'eval_report_{a.agent}.md'}  |  audit: {C.AUDIT_DIR / run_id}")
 

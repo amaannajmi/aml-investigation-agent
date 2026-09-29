@@ -1,0 +1,169 @@
+{
+  "alerts": 124,
+  "suspicious": 51,
+  "benign": 73,
+  "accuracy": 0.992,
+  "precision": 1.0,
+  "recall": 0.98,
+  "f1": 0.99,
+  "roc_auc": 0.998,
+  "confusion": {
+    "tp": 50,
+    "fp": 0,
+    "fn": 1,
+    "tn": 73
+  },
+  "action_accuracy": 0.952,
+  "action_accuracy_suspicious": 0.882,
+  "harmful_action_rate_benign": 0.0,
+  "documents_requested_benign": 0.0,
+  "no_action_on_suspicious": 0.02,
+  "action_confusion": {
+    "CLOSE_ACCOUNT": {
+      "CLOSE_ACCOUNT": 18,
+      "NO_ACTION": 0,
+      "REQUEST_DOCUMENTS": 0,
+      "RESTRICT": 0
+    },
+    "NO_ACTION": {
+      "CLOSE_ACCOUNT": 0,
+      "NO_ACTION": 73,
+      "REQUEST_DOCUMENTS": 0,
+      "RESTRICT": 1
+    },
+    "REQUEST_DOCUMENTS": {
+      "CLOSE_ACCOUNT": 4,
+      "NO_ACTION": 0,
+      "REQUEST_DOCUMENTS": 16,
+      "RESTRICT": 1
+    },
+    "RESTRICT": {
+      "CLOSE_ACCOUNT": 0,
+      "NO_ACTION": 0,
+      "REQUEST_DOCUMENTS": 0,
+      "RESTRICT": 11
+    }
+  },
+  "model_recall": 0.98,
+  "system_recall_after_guardrails": 1.0,
+  "missed_suspicious": 1,
+  "missed_after_guardrails": 0,
+  "fp_clearance_rate": 1.0,
+  "auto_close_rate_benign": 0.726,
+  "escalation_precision": 1.0,
+  "sar_recommendations": 29,
+  "typology_accuracy_on_caught": 0.98,
+  "guardrail_violation_rate": 0.0,
+  "narrative_structure_pass_rate_escalations": 0.98,
+  "recall_by_scenario": {
+    "high_risk_jurisdiction": {
+      "n": 7,
+      "rate": 1.0
+    },
+    "money_mule": {
+      "n": 6,
+      "rate": 1.0
+    },
+    "mule_cash_out": {
+      "n": 6,
+      "rate": 1.0
+    },
+    "pass_through": {
+      "n": 10,
+      "rate": 1.0
+    },
+    "sanctions_exposure": {
+      "n": 7,
+      "rate": 0.857
+    },
+    "sanctions_transliteration": {
+      "n": 6,
+      "rate": 1.0
+    },
+    "structuring": {
+      "n": 9,
+      "rate": 1.0
+    }
+  },
+  "recall_by_variant": {
+    "hard": {
+      "n": 18,
+      "rate": 0.944
+    },
+    "standard": {
+      "n": 33,
+      "rate": 1.0
+    }
+  },
+  "clearance_by_scenario": {
+    "cash_intensive_business": {
+      "n": 16,
+      "rate": 1.0
+    },
+    "new_cash_business": {
+      "n": 5,
+      "rate": 1.0
+    },
+    "one_off_large_credit": {
+      "n": 10,
+      "rate": 1.0
+    },
+    "online_retailer": {
+      "n": 15,
+      "rate": 1.0
+    },
+    "own_account_sweep": {
+      "n": 12,
+      "rate": 1.0
+    },
+    "sanctions_false_hit": {
+      "n": 11,
+      "rate": 1.0
+    },
+    "shared_expenses": {
+      "n": 4,
+      "rate": 1.0
+    }
+  },
+  "auto_close_by_scenario": {
+    "cash_intensive_business": {
+      "n": 16,
+      "rate": 1.0
+    },
+    "new_cash_business": {
+      "n": 5,
+      "rate": 0.0
+    },
+    "one_off_large_credit": {
+      "n": 10,
+      "rate": 1.0
+    },
+    "online_retailer": {
+      "n": 15,
+      "rate": 1.0
+    },
+    "own_account_sweep": {
+      "n": 12,
+      "rate": 1.0
+    },
+    "sanctions_false_hit": {
+      "n": 11,
+      "rate": 0.0
+    },
+    "shared_expenses": {
+      "n": 4,
+      "rate": 0.0
+    }
+  },
+  "workload": {
+    "manual_hours": 93.0,
+    "assisted_hours": 16.9,
+    "hours_saved_pct": 0.819,
+    "assumptions_minutes": {
+      "manual_per_alert": 45,
+      "review_per_agent_case": 12,
+      "qa_per_auto_close": 3
+    }
+  },
+  "mean_seconds_per_alert": 0.058
+}
